@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SNUPick_</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_login">로그인</string>
+    <string name="title_activity_register">회원가입</string>
+    <string name="title_activity_find_subject">강좌 검색</string>
+    <string name="title_activity_detail_subject">과목 정보</string>
+
+</resources>
