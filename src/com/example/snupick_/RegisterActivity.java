@@ -56,7 +56,7 @@ public class RegisterActivity extends Activity {
 			JSONObject jsonobjectStudentNumberPassword = new JSONObject();
 			try {
 				jsonobjectStudentNumberPassword.put("student_number", studentNumber);
-				jsonobjectStudentNumberPassword.put("passwd", password);
+				jsonobjectStudentNumberPassword.put("password", password);
 			} catch (JSONException e) {
 				Toast.makeText(RegisterActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
 				e.printStackTrace();

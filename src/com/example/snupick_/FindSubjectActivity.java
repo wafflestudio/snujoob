@@ -44,7 +44,8 @@ public class FindSubjectActivity extends Activity {
 
 		user = new User(
 					intent.getIntExtra("userId", -1),
-					intent.getIntegerArrayListExtra("subjectIdList")
+					intent.getIntegerArrayListExtra("subjectIdList"),
+					intent.getStringExtra("userToken")
 				);
 		mainActivity.putExtra("userId", user.getId());
 		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
@@ -66,7 +67,8 @@ public class FindSubjectActivity extends Activity {
 		case MainActivity.RESULT_DETAILSUBJECT:
 			user = new User(
 					Data.getIntExtra("userId", -1),
-					Data.getIntegerArrayListExtra("subjectIdList")
+					Data.getIntegerArrayListExtra("subjectIdList"),
+					Data.getStringExtra("userToken")
 				);
 			mainActivity.putExtra("userId", user.getId());
 			mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
@@ -87,7 +89,7 @@ public class FindSubjectActivity extends Activity {
 					intent.putExtra("subjectName", subject.getSubjectName());
 					intent.putExtra("subjectNumber", subject.getSubjectNumber());
 					intent.putExtra("lectureNumber", subject.getLectureNumber());
-					intent.putExtra("professorName", subject.getProfessorName());
+					intent.putExtra("lecturer", subject.getLecturer());
 					startActivityForResult(intent, MainActivity.RESULT_DETAILSUBJECT);
 				}
 			}
@@ -122,7 +124,7 @@ public class FindSubjectActivity extends Activity {
 								jsonSubject.getString("subject_name"),
 								jsonSubject.getString("subject_number"),
 								jsonSubject.getString("lecture_number"),
-								jsonSubject.getString("professor_name")
+								jsonSubject.getString("lecturer")
 							);
 						subjectList.add(subject);
 						TextView textView = new TextView(FindSubjectActivity.this);

@@ -47,14 +47,15 @@ public class DetailSubjectActivity extends Activity {
 
 		user = new User(
 					intent.getIntExtra("userId", -1),
-					intent.getIntegerArrayListExtra("subjectIdList")
+					intent.getIntegerArrayListExtra("subjectIdList"),
+					intent.getStringExtra("userToken")
 				);
 		subject = new Subject(
 					intent.getIntExtra("subjectId", -1),
 					intent.getStringExtra("subjectName"),
 					intent.getStringExtra("subjectNumber"),
 					intent.getStringExtra("lectureNumber"),
-					intent.getStringExtra("professorName")
+					intent.getStringExtra("lecturer")
 				);
 		if (subject.getId() == -1 || user.getId() == -1){
 			Toast.makeText(DetailSubjectActivity.this, "잘목된 접근", Toast.LENGTH_SHORT).show();
@@ -62,6 +63,7 @@ public class DetailSubjectActivity extends Activity {
 		}
 		mainActivity.putExtra("userId", user.getId());
 		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
+		mainActivity.putExtra("userToken", user.getToken());
 		setResult(RESULT_OK, mainActivity);
 		findSubjectActivity.putExtra("userId", user.getId());
 		findSubjectActivity.putExtra("subjectIdList", user.getSubjectIdList());
@@ -70,7 +72,7 @@ public class DetailSubjectActivity extends Activity {
 		((TextView)findViewById(R.id.subjectName)).setText(subject.getSubjectName());
 		((TextView)findViewById(R.id.subjectNumber)).setText(subject.getSubjectNumber());
 		((TextView)findViewById(R.id.lectureNumber)).setText(subject.getLectureNumber());
-		((TextView)findViewById(R.id.professorName)).setText(subject.getProfessorName());
+		((TextView)findViewById(R.id.lecturer)).setText(subject.getLecturer());
 
 		if (user.isMySubjectIdList(subject.getId())){
 			findViewById(R.id.registerButton).setVisibility(View.GONE);
@@ -88,10 +90,11 @@ public class DetailSubjectActivity extends Activity {
 	Button.OnClickListener registerButtonClickEvent = new Button.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String url = "http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + "/register_subject";
+			String url = "http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + "/register";
 			JSONObject send_msg = new JSONObject();
 			try {
 				send_msg.put("subject_id", subject.getId());
+				send_msg.put("token", user.getToken());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -104,10 +107,11 @@ public class DetailSubjectActivity extends Activity {
 	Button.OnClickListener unregisterButtonClickEvent = new Button.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String url = "http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + "/unregister_subject";
+			String url = "http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + "/unregister";
 			JSONObject send_msg = new JSONObject();
 			try {
 				send_msg.put("subject_id", subject.getId());
+				send_msg.put("token", user.getToken());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

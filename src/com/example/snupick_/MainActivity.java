@@ -47,11 +47,12 @@ public class MainActivity extends Activity {
 		user = new User();
 		subjectList = new ArrayList<Subject>();
 		
-		user = new User((Integer)1, new ArrayList<Integer>());
+		user = new User((Integer)1, new ArrayList<Integer>(), null);
 		
 		Intent intent = new Intent(MainActivity.this, FindSubjectActivity.class);
 		intent.putExtra("userId", user.getId());
 		intent.putExtra("subjectIdList", user.getSubjectIdList());
+		intent.putExtra("userToken", user.getToken());
 		
 		findViewById(R.id.atferLogin).setVisibility(View.GONE);
 
@@ -82,6 +83,7 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(MainActivity.this, FindSubjectActivity.class);
 			intent.putExtra("userId", user.getId());
 			intent.putExtra("subjectIdList", user.getSubjectIdList());
+			intent.putExtra("userToekn", user.getToken());
 			
 			startActivityForResult(intent, RESULT_FINDSUBJECT);
 		}
@@ -100,7 +102,7 @@ public class MainActivity extends Activity {
 					intent.putExtra("subjectName", subject.getSubjectName());
 					intent.putExtra("subjectNumber", subject.getSubjectNumber());
 					intent.putExtra("lectureNumber", subject.getLectureNumber());
-					intent.putExtra("professorName", subject.getProfessorName());
+					intent.putExtra("lecturer", subject.getLecturer());
 					Log.d("LOG", "start!");
 					startActivityForResult(intent, MainActivity.RESULT_DETAILSUBJECT);
 					return;
@@ -114,38 +116,44 @@ public class MainActivity extends Activity {
 		case RESULT_LOGIN:
 			user = new User(
 						Data.getIntExtra("userId", -1),
-						Data.getIntegerArrayListExtra("subjectIdList")
+						Data.getIntegerArrayListExtra("subjectIdList"),
+						Data.getStringExtra("userToken")
 					);
 			if (user.getId() == -1){
 				user = null;
 				Toast.makeText(MainActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + ".json");
+			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/"
+						+ user.getId().toString() + ".json?token=" + user.getToken());
 			break;
 		case RESULT_DETAILSUBJECT:
 			user = new User(
 						Data.getIntExtra("userId", -1),
-						Data.getIntegerArrayListExtra("subjectIdList")
+						Data.getIntegerArrayListExtra("subjectIdList"),
+						Data.getStringExtra("userToken")
 					);
 			if (user.getId() == -1){
 				user = null;
 				Toast.makeText(MainActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + ".json");
+			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/"
+					+ user.getId().toString() + ".json?token=" + user.getToken());
 			break;
 		case RESULT_FINDSUBJECT:
 			user = new User(
 					Data.getIntExtra("userId", -1),
-					Data.getIntegerArrayListExtra("subjectIdList")
+					Data.getIntegerArrayListExtra("subjectIdList"),
+					Data.getStringExtra("userToken")
 				);
 			if (user.getId() == -1){
 				user = null;
 				Toast.makeText(MainActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + ".json");
+			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/"
+					+ user.getId().toString() + ".json?token=" + user.getToken());
 			break;
 		}
 	}
@@ -153,7 +161,7 @@ public class MainActivity extends Activity {
     private class LoadUserInformation extends AsyncTask<String, Boolean, String> {
         @Override
         protected String doInBackground(String... urls) {
-        	
+        		
             return GET(urls[0]);
         }
         // onPostExecute displays the results of the AsyncTask.
@@ -179,7 +187,7 @@ public class MainActivity extends Activity {
 								jsonSubject.getString("subject_name"),
 								jsonSubject.getString("subject_number"),
 								jsonSubject.getString("lecture_number"),
-								jsonSubject.getString("professor_name")
+								jsonSubject.getString("lecturer")
 							);
 						subjectList.add(subject);
 						user.appendMySubjectIdList(subject.getId());
@@ -285,20 +293,21 @@ class Subject {
 	private String subjectName;
 	private String subjectNumber;
 	private String lectureNumber;
-	private String professorName;
+	private String lecturer;
+	
 	Subject(){
 		id = 0;
 		subjectName = null;
 		subjectNumber = null;
 		lectureNumber = null;
-		professorName = null;
+		lecturer = null;
 	}
-	Subject(Integer id, String subjectName, String subjectNumber, String lectureNumber, String professorName){
+	Subject(Integer id, String subjectName, String subjectNumber, String lectureNumber, String lecturer){
 		this.id = id;
 		this.subjectName = subjectName;
 		this.subjectNumber = subjectNumber;
 		this.lectureNumber = lectureNumber;
-		this.professorName = professorName;
+		this.lecturer = lecturer;
 	}
 	Integer getId(){
 		return this.id;
@@ -312,28 +321,34 @@ class Subject {
 	String getLectureNumber(){
 		return this.lectureNumber;
 	}
-	String getProfessorName(){
-		return this.professorName;
+	String getLecturer(){
+		return this.lecturer;
 	}
 }
 
 class User {
 	private Integer id;
 	private ArrayList<Integer> mySubjectIdList = null;
+	private String token;
 	
 	User(){
 		id = null;
-		mySubjectIdList = new ArrayList<Integer>(); 
+		mySubjectIdList = new ArrayList<Integer>();
+		token = null;
 	}
-	User(Integer id, ArrayList<Integer> subjectIdList){
+	User(Integer id, ArrayList<Integer> subjectIdList, String token){
 		this.id = id;
 		mySubjectIdList = subjectIdList;
+		this.token = token;
 	}
 	Integer getId(){
 		return this.id;
 	}
 	ArrayList<Integer> getSubjectIdList(){
 		return this.mySubjectIdList;
+	}
+	String getToken(){
+		return this.token;
 	}
 	void setId(Integer id){
 		this.id = id;
@@ -349,5 +364,8 @@ class User {
 	}
 	static Boolean isStudentNumber(String studentNumber){
 		return Pattern.matches("20[0-9]{2}-[0-9]{5}", studentNumber);
+	}
+	void setToken(String token){
+		this.token = token;
 	}
 }

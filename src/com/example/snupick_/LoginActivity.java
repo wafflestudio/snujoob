@@ -53,7 +53,7 @@ public class LoginActivity extends Activity {
 			JSONObject jsonobjectStudentNumberPassword = new JSONObject();
 			try {
 				jsonobjectStudentNumberPassword.put("student_number", studentNumber);
-				jsonobjectStudentNumberPassword.put("passwd", password);
+				jsonobjectStudentNumberPassword.put("password", password);
 			} catch (JSONException e) {
 				Toast.makeText(LoginActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
@@ -86,7 +86,7 @@ public class LoginActivity extends Activity {
 						Toast.makeText(LoginActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
 						return;
 					}
-					user = new User(jsonResult.getInt("id"), new ArrayList<Integer>());
+					user = new User(jsonResult.getInt("id"), new ArrayList<Integer>(), jsonResult.getString("token"));
 				} catch (JSONException e) {
 					Toast.makeText(LoginActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
@@ -94,6 +94,7 @@ public class LoginActivity extends Activity {
 				}
         		mainActivity.putExtra("userId", user.getId());
         		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
+        		mainActivity.putExtra("userToken", user.getToken());
         		setResult(RESULT_OK, mainActivity);
         		finish();
         	}
