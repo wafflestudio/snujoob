@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -57,6 +58,8 @@ public class DetailSubjectActivity extends Activity {
 					intent.getStringExtra("lectureNumber"),
 					intent.getStringExtra("lecturer")
 				);
+		Integer capacity = intent.getIntExtra("capacity", 0);
+		Integer enrolled = intent.getIntExtra("enrolled", 0);
 		if (subject.getId() == -1 || user.getId() == -1){
 			Toast.makeText(DetailSubjectActivity.this, "잘목된 접근", Toast.LENGTH_SHORT).show();
 			return;
@@ -67,12 +70,17 @@ public class DetailSubjectActivity extends Activity {
 		setResult(RESULT_OK, mainActivity);
 		findSubjectActivity.putExtra("userId", user.getId());
 		findSubjectActivity.putExtra("subjectIdList", user.getSubjectIdList());
+		findSubjectActivity.putExtra("userToken", user.getToken());
 		setResult(RESULT_OK, findSubjectActivity);
 		
 		((TextView)findViewById(R.id.subjectName)).setText(subject.getSubjectName());
-		((TextView)findViewById(R.id.subjectNumber)).setText(subject.getSubjectNumber());
-		((TextView)findViewById(R.id.lectureNumber)).setText(subject.getLectureNumber());
-		((TextView)findViewById(R.id.lecturer)).setText(subject.getLecturer());
+		((TextView)findViewById(R.id.subjectNumber)).setText("과목 번호: " 
+				+ subject.getSubjectNumber() + "  " + subject.getLectureNumber());
+		((TextView)findViewById(R.id.lecturer)).setText("" + subject.getLecturer());
+		((TextView)findViewById(R.id.capacity)).setText("정원: " + capacity);
+		((TextView)findViewById(R.id.enrolled)).setText("등록: " + enrolled);
+		if (enrolled >= capacity)
+			((TextView)findViewById(R.id.enrolled)).setTextColor(Color.parseColor("#FF0000"));
 
 		if (user.isMySubjectIdList(subject.getId())){
 			findViewById(R.id.registerButton).setVisibility(View.GONE);

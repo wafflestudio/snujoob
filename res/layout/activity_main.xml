@@ -5,6 +5,7 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <LinearLayout
+        
         android:id="@+id/atferLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,30 +15,33 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical" >
 
+	    <LinearLayout
+	        android:id="@+id/linlaHeaderProgress"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:gravity="center"
+	        android:orientation="vertical"
+	        android:visibility="visible" >
+
+	        <ProgressBar
+	            android:id="@+id/pbHeaderProgress"
+	            style="?android:attr/progressBarStyleLarge"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	        </ProgressBar>
+	    </LinearLayout>
+	    
         <Button
             android:id="@+id/findButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="+" />
+            android:text="Add Subject" />
         
         <ListView 
             android:id="@+id/subjectListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:context=".MainActivity" />
-
-        <ScrollView
-            android:id="@+id/scrollView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <LinearLayout
-                android:id="@+id/subjectList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" >
-            </LinearLayout>
-        </ScrollView>
 
     </LinearLayout>
 
