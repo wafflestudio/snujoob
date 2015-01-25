@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gcm.GCMRegistrar;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -32,7 +34,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -61,6 +62,7 @@ public class MainActivity extends Activity {
 		((Button)findViewById(R.id.loginButton)).setOnClickListener(loginButtonClickEvent);
 		((Button)findViewById(R.id.registerButton)).setOnClickListener(registerButtonClickEvent);
 		((Button)findViewById(R.id.findButton)).setOnClickListener(findSubjectButtonClickEvent);
+		((Button)findViewById(R.id.unregisterButton)).setOnClickListener(unregisterButtonClickEvent);
 	}
 	
 	Button.OnClickListener loginButtonClickEvent = new OnClickListener(){
@@ -90,31 +92,17 @@ public class MainActivity extends Activity {
 			startActivityForResult(intent, RESULT_FINDSUBJECT);
 		}
 	};
-	/*
-	Button.OnClickListener subjectClickEvent = new OnClickListener(){
+	
+	Button.OnClickListener unregisterButtonClickEvent = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			for (int i = 0 ; i < subjectList.size() ; i++){
-				Subject subject = subjectList.get(i);
-				if (subject.getId() == v.getId()){
-					Intent intent = new Intent(MainActivity.this, DetailSubjectActivity.class);
-					intent.putExtra("userId", user.getId());
-					intent.putExtra("subjectIdList", user.getSubjectIdList());
-					intent.putExtra("subjectId", subject.getId());
-					intent.putExtra("subjectName", subject.getSubjectName());
-					intent.putExtra("subjectNumber", subject.getSubjectNumber());
-					intent.putExtra("lectureNumber", subject.getLectureNumber());
-					intent.putExtra("lecturer", subject.getLecturer());
-					Log.d("LOG", "start!");
-					startActivityForResult(intent, MainActivity.RESULT_DETAILSUBJECT);
-					return;
-				}
-			}
+			Unregister();
 		}
 	};
-	*/
+
 	private AdapterView.OnItemClickListener subjectItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long l_position) {
             HashMap<String, String> hashmap = (HashMap<String, String>) parent.getAdapter().getItem(position);
@@ -183,7 +171,14 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-    private class LoadUserInformation extends AsyncTask<String, Boolean, String> {
+    protected void Unregister() {
+		if (GCMRegistrar.isRegistered(this)) {
+			GCMRegistrar.unregister(this);
+			Toast.makeText(this, "기기가 해지되었습니다.\n로그인 시 다시 등록됩니다.", Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private class LoadUserInformation extends AsyncTask<String, Boolean, String> {
         @Override
         protected String doInBackground(String... urls) {
         		
@@ -241,6 +236,7 @@ public class MainActivity extends Activity {
 
         		findViewById(R.id.loginButton).setVisibility(View.GONE);
         		findViewById(R.id.registerButton).setVisibility(View.GONE);
+        		findViewById(R.id.unregisterButton).setVisibility(View.GONE);
         		findViewById(R.id.linlaHeaderProgress).setVisibility(View.GONE);
         		findViewById(R.id.atferLogin).setVisibility(View.VISIBLE);
         	}

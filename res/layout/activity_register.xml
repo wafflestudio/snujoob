@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="134dp"
+        android:layout_marginTop="115dp"
         android:ems="10"
-        android:hint="20xx-xxxxx"
-        android:inputType="text" >"
+        android:hint="@string/hint_student_number"
+        android:inputType="numberSigned" >
 
         <requestFocus />
     </EditText>
@@ -23,8 +23,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/studentNumber"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/studentNumber"
+        android:layout_marginTop="30dp"
         android:ems="10"
+        android:hint="@string/hint_password"
         android:inputType="textPassword" />
 
     <EditText
@@ -32,18 +34,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/password"
+        android:layout_alignRight="@+id/password"
         android:layout_below="@+id/password"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="@string/hint_password_confirm"
         android:inputType="textPassword" />
 
     <Button
         android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/passwordConfirm"
+        android:layout_alignRight="@+id/passwordConfirm"
         android:layout_below="@+id/passwordConfirm"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
-        android:text="Sign up" />
+        android:layout_marginTop="30dp"
+        android:text="@string/sign_up" />
 
 </RelativeLayout>

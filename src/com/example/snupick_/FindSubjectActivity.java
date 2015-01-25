@@ -81,30 +81,9 @@ public class FindSubjectActivity extends Activity {
 			break;
 		}
 	}
-	/*
-	Button.OnClickListener subjectClickEvent = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			for (int i = 0 ; i < subjectList.size() ; i++){
-				Subject subject = subjectList.get(i);
-				if (subject.getId() == v.getId()){
-					Intent intent = new Intent(FindSubjectActivity.this, DetailSubjectActivity.class);
-					intent.putExtra("userId", user.getId());
-					intent.putExtra("subjectIdList", user.getSubjectIdList());
-					intent.putExtra("userToken", user.getToken());
-					
-					intent.putExtra("subjectId", subject.getId());
-					intent.putExtra("subjectName", subject.getSubjectName());
-					intent.putExtra("subjectNumber", subject.getSubjectNumber());
-					intent.putExtra("lectureNumber", subject.getLectureNumber());
-					intent.putExtra("lecturer", subject.getLecturer());
-					startActivityForResult(intent, MainActivity.RESULT_DETAILSUBJECT);
-				}
-			}
-		}
-	};
-	*/
+
 	private AdapterView.OnItemClickListener subjectItemClickListener = new AdapterView.OnItemClickListener() {
+		@SuppressWarnings("unchecked")
 		@Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long l_position) {

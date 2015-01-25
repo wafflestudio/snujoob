@@ -25,10 +25,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gcm.GCMRegistrar;
+
 public class LoginActivity extends Activity {
 	
 	Intent mainActivity = null;
 	User user = null;
+	String regIdToServer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,13 @@ public class LoginActivity extends Activity {
 
 		mainActivity = new Intent(LoginActivity.this, MainActivity.class);
 		setResult(RESULT_CANCELED, mainActivity);
+
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		final String regId = GCMRegistrar.getRegistrationId(this);
+		if("".equals(regId))
+			GCMRegistrar.register(this, "801697427023");
+		regIdToServer = GCMRegistrar.getRegistrationId(this);
 		
 		((Button)findViewById(R.id.loginButton)).setOnClickListener(loginButtonClickEvent);
 	}
@@ -54,6 +64,8 @@ public class LoginActivity extends Activity {
 			try {
 				jsonobjectStudentNumberPassword.put("student_number", studentNumber);
 				jsonobjectStudentNumberPassword.put("password", password);
+				jsonobjectStudentNumberPassword.put("reg_id", regIdToServer);
+				jsonobjectStudentNumberPassword.put("device", "Android");
 			} catch (JSONException e) {
 				Toast.makeText(LoginActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
