@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="114dp"
+        android:layout_marginTop="115dp"
         android:ems="10"
-        android:hint="20xx-xxxxx"
-        android:inputType="text" >"
+        android:hint="@string/hint_student_number"
+        android:inputType="text" >
 
         <requestFocus />
     </EditText>
@@ -24,17 +24,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/studentNumber"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
+        android:hint="@string/hint_password"
         android:inputType="textPassword" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/studentNumber"
+        android:layout_alignRight="@+id/studentNumber"
         android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp"
-        android:text="sign in" />
+        android:layout_marginTop="40dp"
+        android:text="@string/sign_in" />
 
 </RelativeLayout>

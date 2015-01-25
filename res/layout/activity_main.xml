@@ -35,7 +35,7 @@
             android:id="@+id/findButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Subject" />
+            android:text="@string/add_subject" />
         
         <ListView 
             android:id="@+id/subjectListView"
@@ -47,20 +47,38 @@
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="sign in" />
+        android:layout_marginTop="100dp"
+        android:text="@string/sign_in" />
 
     <Button
         android:id="@+id/registerButton"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/loginButton"
+        android:layout_marginTop="50dp"
+        android:text="@string/sign_up" />
+
+    <Button
+        android:id="@+id/unregisterButton"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/registerButton"
+        android:layout_marginTop="100dp"
+        android:text="@string/unregister" />
+
+    <TextView
+        android:id="@+id/developer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/loginButton"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:text="sign up" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:text="@string/developer" />
 
 </RelativeLayout>

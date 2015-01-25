@@ -1090,6 +1090,7 @@ containing a value of this type.
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
         public static final int default_activity_button=0x7f050028;
+        public static final int developer=0x7f05004e;
         public static final int dialog=0x7f05000e;
         public static final int disableHome=0x7f050008;
         public static final int dropdown=0x7f05000f;
@@ -1116,12 +1117,12 @@ containing a value of this type.
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
         public static final int password=0x7f05004a;
-        public static final int passwordConfirm=0x7f05004e;
+        public static final int passwordConfirm=0x7f05004f;
         public static final int pbHeaderProgress=0x7f050047;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
-        public static final int register=0x7f05004f;
+        public static final int register=0x7f050050;
         public static final int registerButton=0x7f050042;
         public static final int resultListView=0x7f050048;
         public static final int search_badge=0x7f050032;
@@ -1251,12 +1252,19 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
+        public static final int add_subject=0x7f0a0012;
         public static final int app_name=0x7f0a000d;
-        public static final int hello_world=0x7f0a000e;
-        public static final int title_activity_detail_subject=0x7f0a0012;
-        public static final int title_activity_find_subject=0x7f0a0011;
-        public static final int title_activity_login=0x7f0a000f;
-        public static final int title_activity_register=0x7f0a0010;
+        public static final int developer=0x7f0a0019;
+        public static final int hint_password=0x7f0a0017;
+        public static final int hint_password_confirm=0x7f0a0018;
+        public static final int hint_student_number=0x7f0a0016;
+        public static final int sign_in=0x7f0a0013;
+        public static final int sign_up=0x7f0a0014;
+        public static final int title_activity_detail_subject=0x7f0a0011;
+        public static final int title_activity_find_subject=0x7f0a0010;
+        public static final int title_activity_login=0x7f0a000e;
+        public static final int title_activity_register=0x7f0a000f;
+        public static final int unregister=0x7f0a0015;
     }
     public static final class style {
         /** 
