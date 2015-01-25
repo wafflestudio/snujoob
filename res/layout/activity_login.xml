@@ -13,7 +13,7 @@
         android:layout_marginTop="115dp"
         android:ems="10"
         android:hint="@string/hint_student_number"
-        android:inputType="numberSigned" >
+        android:inputType="text" >
 
         <requestFocus />
     </EditText>

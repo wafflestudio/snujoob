@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SNUJub</string>
+    <string name="app_name">SNUJoop</string>
     <string name="title_activity_login">로그인</string>
     <string name="title_activity_register">회원가입</string>
     <string name="title_activity_find_subject">강좌 검색</string>
@@ -13,5 +13,6 @@
     <string name="hint_student_number">20xx-xxxxx</string>
     <string name="hint_password">password</string>
     <string name="hint_password_confirm">password confirm</string>
+    <string name="developer">Leeingnyo (SNUCSE14)\nglglgozz@wafflestudio.com</string>
 
 </resources>

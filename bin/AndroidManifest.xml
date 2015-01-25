@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.wafflestudio.snujoop.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,19 +32,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.wafflestudio.snujoop.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.wafflestudio.snujoop.RegisterActivity"
             android:label="@string/title_activity_register" >
         </activity>
         <activity
-            android:name=".FindSubjectActivity"
+            android:name="com.wafflestudio.snujoop.FindSubjectActivity"
             android:label="@string/title_activity_find_subject" >
         </activity>
         <activity
-            android:name=".DetailSubjectActivity"
+            android:name="com.wafflestudio.snujoop.DetailSubjectActivity"
             android:label="@string/title_activity_detail_subject" >
         </activity>
         <receiver
@@ -55,7 +55,7 @@
 				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 			</intent-filter>
 		</receiver>
-		<service android:name=".GCMIntentService" />
+		<service android:name="com.wafflestudio.snujoop.GCMIntentService" />
     </application>
 
 </manifest>
