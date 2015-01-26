@@ -14,5 +14,6 @@
     <string name="hint_password">password</string>
     <string name="hint_password_confirm">password confirm</string>
     <string name="developer">Leeingnyo (SNUCSE14)\nglglgozz@wafflestudio.com</string>
+    <string name="auto_login">Save Info</string>
 
 </resources>

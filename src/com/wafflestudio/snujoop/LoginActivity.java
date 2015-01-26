@@ -1,8 +1,9 @@
 package com.wafflestudio.snujoop;
 
-import com.wafflestudio.snujoop.R;
-
 import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -48,7 +51,34 @@ public class LoginActivity extends Activity {
 		final String regId = GCMRegistrar.getRegistrationId(this);
 		if("".equals(regId))
 			GCMRegistrar.register(this, "801697427023");
-		regIdToServer = GCMRegistrar.getRegistrationId(this);
+		if (GCMRegistrar.isRegistered(this))
+			regIdToServer = GCMRegistrar.getRegistrationId(this);
+
+		FileInputStream fis;
+		String studentNumber = "";
+		String password = "";
+		
+		try {
+			fis = openFileInput("idpassword");
+			StringBuffer fileContent = new StringBuffer("");
+			byte[] buffer = new byte[1024];
+			int n;
+			while ((n = fis.read(buffer)) != -1) {
+				fileContent.append(new String(buffer, 0, n)); 
+			}
+			studentNumber = fileContent.toString().split("\n")[0];
+			password = fileContent.toString().split("\n")[1];
+			
+		} catch (FileNotFoundException e) {
+			studentNumber = password = "";
+			e.printStackTrace();
+		} catch (Exception e) {
+			studentNumber = password = "";
+			e.printStackTrace();
+		}
+		
+		((EditText)findViewById(R.id.studentNumber)).setText(studentNumber);
+		((EditText)findViewById(R.id.password)).setText(password);
 		
 		((Button)findViewById(R.id.loginButton)).setOnClickListener(loginButtonClickEvent);
 	}
@@ -76,6 +106,22 @@ public class LoginActivity extends Activity {
 			String send_msg = jsonobjectStudentNumberPassword.toString();
 			
 			new RequestLogin().execute("http://dev.wafflestudio.net:10101/login", send_msg);
+
+			String filename = "idpassword";
+			String string = null;
+			if ( ((CheckBox)findViewById(R.id.autoLoginCheckBox)).isChecked() ){
+				string = studentNumber + "\n" + password;
+			} else {
+				string = "\n";
+			}
+			FileOutputStream outputStream;
+			try {
+				outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+				outputStream.write(string.getBytes());
+				outputStream.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	};
 

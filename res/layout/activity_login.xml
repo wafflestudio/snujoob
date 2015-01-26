@@ -39,4 +39,15 @@
         android:layout_marginTop="40dp"
         android:text="@string/sign_in" />
 
+    <CheckBox
+        android:id="@+id/autoLoginCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/loginButton"
+        android:layout_alignRight="@+id/loginButton"
+        android:layout_below="@+id/loginButton"
+        android:layout_marginTop="0dp"
+        android:text="@string/auto_login"
+        android:checked="true" />
+
 </RelativeLayout>

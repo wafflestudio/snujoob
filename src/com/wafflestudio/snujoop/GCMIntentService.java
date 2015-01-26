@@ -48,6 +48,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         		.setSmallIcon(R.drawable.ic_launcher)
         		.setTicker("해당 과목에 자리가 났습니다")
         		.setAutoCancel(true)
+        		.setOngoing(false)
         		.setVibrate(new long[] { 0, 100, 200, 300, 500 })
         		.build();
         mNM.notify(Integer.parseInt(data.get("id")), mNoti);
