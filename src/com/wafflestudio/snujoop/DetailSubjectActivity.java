@@ -1,7 +1,5 @@
 package com.wafflestudio.snujoop;
 
-import com.wafflestudio.snujoop.R;
-
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 
@@ -61,6 +59,7 @@ public class DetailSubjectActivity extends Activity {
 					intent.getStringExtra("lecturer")
 				);
 		Integer capacity = intent.getIntExtra("capacity", 0);
+		Integer capacityEnrolled = intent.getIntExtra("capacityEnrolled", 0);
 		Integer enrolled = intent.getIntExtra("enrolled", 0);
 		if (subject.getId() == -1 || user.getId() == -1){
 			Toast.makeText(DetailSubjectActivity.this, "잘목된 접근", Toast.LENGTH_SHORT).show();
@@ -79,7 +78,8 @@ public class DetailSubjectActivity extends Activity {
 		((TextView)findViewById(R.id.subjectNumber)).setText("과목 번호: " 
 				+ subject.getSubjectNumber() + "  " + subject.getLectureNumber());
 		((TextView)findViewById(R.id.lecturer)).setText("" + subject.getLecturer());
-		((TextView)findViewById(R.id.capacity)).setText("정원: " + capacity);
+		((TextView)findViewById(R.id.capacity)).setText("정원 (재학생): " + capacity
+				+ (capacityEnrolled != 0 ? " (" + capacityEnrolled + ")" : ""));
 		((TextView)findViewById(R.id.enrolled)).setText("등록: " + enrolled);
 		if (enrolled >= capacity)
 			((TextView)findViewById(R.id.enrolled)).setTextColor(Color.parseColor("#FF0000"));
