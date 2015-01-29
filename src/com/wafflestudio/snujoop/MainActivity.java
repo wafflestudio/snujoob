@@ -52,11 +52,6 @@ public class MainActivity extends Activity {
 		
 		user = new User((Integer)1, new ArrayList<Integer>(), null);
 		
-		Intent intent = new Intent(MainActivity.this, FindSubjectActivity.class);
-		intent.putExtra("userId", user.getId());
-		intent.putExtra("subjectIdList", user.getSubjectIdList());
-		intent.putExtra("userToken", user.getToken());
-		
 		findViewById(R.id.atferLogin).setVisibility(View.GONE);
 
 		((Button)findViewById(R.id.loginButton)).setOnClickListener(loginButtonClickEvent);

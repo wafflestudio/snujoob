@@ -1,12 +1,11 @@
 package com.wafflestudio.snujoop;
 
-import com.wafflestudio.snujoop.R;
-
 import java.util.HashMap;
 import java.util.Iterator;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,6 +40,10 @@ public class GCMIntentService extends GCMBaseIntentService {
             data.put(key, value);
         }
         
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        mainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, mainActivity, 0);
+        
         mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNoti = new NotificationCompat.Builder(getApplicationContext())
         		.setContentTitle("SNUJoop")
@@ -50,6 +53,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         		.setAutoCancel(true)
         		.setOngoing(false)
         		.setVibrate(new long[] { 0, 100, 200, 300, 500 })
+        		.setContentIntent(pi)
         		.build();
         mNM.notify(Integer.parseInt(data.get("id")), mNoti);
     }
