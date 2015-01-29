@@ -1,7 +1,5 @@
 package com.wafflestudio.snujoop;
 
-import com.wafflestudio.snujoop.R;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -120,6 +118,7 @@ public class MainActivity extends Activity {
 			intent.putExtra("lectureNumber", hashmap.get("subject_number").split(" ")[1]);
 			intent.putExtra("lecturer", hashmap.get("lecturer"));
 			intent.putExtra("capacity", Integer.parseInt(hashmap.get("capacity")));
+			intent.putExtra("capacityEnrolled", Integer.parseInt(hashmap.get("capacity_enrolled")));
 			intent.putExtra("enrolled", Integer.parseInt(hashmap.get("enrolled")));
 
 			startActivityForResult(intent, MainActivity.RESULT_DETAILSUBJECT);
@@ -212,12 +211,14 @@ public class MainActivity extends Activity {
 						String subjectNumber = jsonSubject.getString("subject_number") + " " + jsonSubject.getString("lecture_number");
 						String lecturer = jsonSubject.getString("lecturer");
 						Integer capacity = jsonSubject.getInt("capacity");
+						Integer capacityEnrolled = jsonSubject.getInt("capacity_enrolled");
 						Integer enrolled = jsonSubject.getInt("enrolled");
 						hashmap.put("id", id.toString());
 						hashmap.put("subject_name", subjectName);
 						hashmap.put("subject_number", subjectNumber);
 						hashmap.put("lecturer", lecturer);
 						hashmap.put("capacity", capacity.toString());
+						hashmap.put("capacity_enrolled", capacityEnrolled.toString());
 						hashmap.put("enrolled", enrolled.toString());
 						subjectList.add(hashmap);
 						
