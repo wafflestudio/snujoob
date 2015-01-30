@@ -1,21 +1,9 @@
 package com.wafflestudio.snujoop;
 
-import com.wafflestudio.snujoop.R;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,6 +55,8 @@ public class RegisterActivity extends Activity {
 			String send_msg = jsonobjectStudentNumberPassword.toString();
 			
 			new RequestRegister().execute("http://dev.wafflestudio.net:10101/users", send_msg);
+    		findViewById(R.id.linlaHeaderProgress).setVisibility(View.VISIBLE);
+    		((Button)findViewById(R.id.registerButton)).setEnabled(false);
 		}
 	};
 
@@ -74,7 +64,7 @@ public class RegisterActivity extends Activity {
         @Override
         protected String doInBackground(String... urls) {
  
-            return POST(urls[0], urls[1]);
+            return MainActivity.POST(urls[0], urls[1]);
         }
         // onPostExecute displays the results of the AsyncTask.
         
@@ -89,6 +79,7 @@ public class RegisterActivity extends Activity {
 					jsonResult = new JSONObject(result);
 				} catch (JSONException e) {
 					Toast.makeText(RegisterActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
+		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
 					e.printStackTrace();
 					return;
 				}
@@ -97,72 +88,31 @@ public class RegisterActivity extends Activity {
 					requestRegisterResult = jsonResult.getString("result");
 				} catch (JSONException e) {
 					Toast.makeText(RegisterActivity.this, "there are no 'result'", Toast.LENGTH_SHORT).show();
+		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
 					e.printStackTrace();
 					return;
 				}
         		switch (requestRegisterResult){
         		case "already":
         			Toast.makeText(RegisterActivity.this, "already exist. please contact to 'glglgozz@wafflestudio.com'", Toast.LENGTH_LONG).show();
+		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
         			break;
         		case "success":
         			Toast.makeText(RegisterActivity.this, "success resgistering", Toast.LENGTH_LONG).show();
+		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
         			finish();
         			break;
         		case "fail":
         			Toast.makeText(RegisterActivity.this, "fail registering\nif something wrong, please connect to 'glglgozz@wafflestudio.com'", Toast.LENGTH_LONG).show();
+		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
         			break;
         		}
         	}
     		else {
 				Toast.makeText(RegisterActivity.this, "please connect to Internet", Toast.LENGTH_SHORT).show();
+	    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
     		}
+    		findViewById(R.id.linlaHeaderProgress).setVisibility(View.GONE);
         }
-    }
-	
-	public String POST(String url, String send_msg){
-		StringBuilder JSONdata = new StringBuilder();
-		InputStream inputStream = null;
-		byte[] buffer = new byte[1024];
-		String result = null;
-		
-		try {
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(url);
-			StringEntity se = new StringEntity(send_msg);
-			httpPost.setEntity(se);
-			httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            inputStream = httpResponse.getEntity().getContent();
-            if(inputStream != null){
-                try {
-                    int bytesRead = 0;
-                    BufferedInputStream bis = new BufferedInputStream(inputStream);
-                    while ((bytesRead = bis.read(buffer) ) != -1) {
-                        String line = new String(buffer, 0, bytesRead);
-                        JSONdata.append(line);
-                    }
-                    result = JSONdata.toString();
-                } catch (Exception e) {
-                    Log.e("logcat", Log.getStackTraceString(e));
-                } finally {
-                    try {
-                        inputStream.close();
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
-		return result;
-	}
-    public boolean isConnected(){
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected())
-                return true;
-            else
-                return false;
     }
 }
