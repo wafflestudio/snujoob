@@ -21,8 +21,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -245,7 +243,7 @@ public class MainActivity extends Activity {
         }
     }
 	
-	public String GET(String url){
+	public static String GET(String url){
 		InputStream inputStream = null;
 		String result = "";
 		try {
@@ -270,7 +268,7 @@ public class MainActivity extends Activity {
 		return result;
 	}
 	
-	public String POST(String url, String send_msg){
+	public static String POST(String url, String send_msg){
 		StringBuilder JSONdata = new StringBuilder();
 		InputStream inputStream = null;
 		byte[] buffer = new byte[1024];
@@ -311,14 +309,6 @@ public class MainActivity extends Activity {
         }
 		return result;
 	}
-    public boolean isConnected(){
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected())
-                return true;
-            else
-                return false;
-    }
 }
 
 class Subject {

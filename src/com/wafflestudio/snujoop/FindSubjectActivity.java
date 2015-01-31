@@ -1,16 +1,9 @@
 package com.wafflestudio.snujoop;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,7 +104,7 @@ public class FindSubjectActivity extends Activity {
         @Override
         protected String doInBackground(String... urls) {
         	
-            return GET(urls[0]);
+            return MainActivity.GET(urls[0]);
         }
         // onPostExecute displays the results of the AsyncTask.
         
@@ -170,29 +163,4 @@ public class FindSubjectActivity extends Activity {
     		}
         }
     }
-	
-	public static String GET(String url){
-		InputStream inputStream = null;
-		String result = "";
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
-			inputStream = httpResponse.getEntity().getContent();	
-			if(inputStream != null){
-		        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-		        String line = "";
-		        String temp = "";
-		        while((line = bufferedReader.readLine()) != null)
-		            temp += line;
-		        inputStream.close();
-		        result = new String(temp);
-			}
-			else
-				result = "Did not work!";
-
-		} catch (Exception e) {
-			Log.d("InputStream", e.getLocalizedMessage());
-		}
-		return result;
-	}
 }
