@@ -92,7 +92,7 @@ public class RegisterActivity extends Activity {
 					e.printStackTrace();
 					return;
 				}
-        		switch (requestRegisterResult){
+        		switch (requestRegisterResult){ 
         		case "already":
         			Toast.makeText(RegisterActivity.this, "already exist. please contact to 'glglgozz@wafflestudio.com'", Toast.LENGTH_LONG).show();
 		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
