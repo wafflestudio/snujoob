@@ -22,7 +22,7 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 
-		((Button)findViewById(R.id.register)).setOnClickListener(registerButtonClickEvent);
+		((Button)findViewById(R.id.registerButton)).setOnClickListener(registerButtonClickEvent);
 	}
 	
 	Button.OnClickListener registerButtonClickEvent = new OnClickListener(){
@@ -54,7 +54,7 @@ public class RegisterActivity extends Activity {
 			}
 			String send_msg = jsonobjectStudentNumberPassword.toString();
 			
-			new RequestRegister().execute("http://dev.wafflestudio.net:10101/users", send_msg);
+			new RequestRegister().execute("http://revreserver.me:11663/users", send_msg);
     		findViewById(R.id.linlaHeaderProgress).setVisibility(View.VISIBLE);
     		((Button)findViewById(R.id.registerButton)).setEnabled(false);
 		}

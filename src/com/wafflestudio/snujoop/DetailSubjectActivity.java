@@ -52,7 +52,7 @@ public class DetailSubjectActivity extends Activity {
 		Integer capacityEnrolled = intent.getIntExtra("capacityEnrolled", 0);
 		Integer enrolled = intent.getIntExtra("enrolled", 0);
 		if (subject.getId() == -1 || user.getId() == -1){
-			Toast.makeText(DetailSubjectActivity.this, "Àß¸ñµÈ Á¢±Ù", Toast.LENGTH_SHORT).show();
+			Toast.makeText(DetailSubjectActivity.this, "ìž˜ëª»ëœ ì ‘ê·¼ìž…ë‹ˆë‹¤.", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		mainActivity.putExtra("userId", user.getId());
@@ -65,12 +65,12 @@ public class DetailSubjectActivity extends Activity {
 		setResult(RESULT_OK, findSubjectActivity);
 		
 		((TextView)findViewById(R.id.subjectName)).setText(subject.getSubjectName());
-		((TextView)findViewById(R.id.subjectNumber)).setText("°ú¸ñ ¹øÈ£: " 
+		((TextView)findViewById(R.id.subjectNumber)).setText("ê³¼ëª© ë²ˆí˜¸: " 
 				+ subject.getSubjectNumber() + "  " + subject.getLectureNumber());
 		((TextView)findViewById(R.id.lecturer)).setText("" + subject.getLecturer());
-		((TextView)findViewById(R.id.capacity)).setText("Á¤¿ø (ÀçÇÐ»ý): " + capacity
+		((TextView)findViewById(R.id.capacity)).setText("ì •ì› (ìž¬í•™ìƒ): " + capacity
 				+ (capacityEnrolled != 0 ? " (" + capacityEnrolled + ")" : ""));
-		((TextView)findViewById(R.id.enrolled)).setText("µî·Ï: " + enrolled);
+		((TextView)findViewById(R.id.enrolled)).setText("ë“±ë¡í•œì‚¬ëžŒ: " + enrolled);
 		if (enrolled >= capacity)
 			((TextView)findViewById(R.id.enrolled)).setTextColor(Color.parseColor("#FF0000"));
 
@@ -90,7 +90,7 @@ public class DetailSubjectActivity extends Activity {
 	Button.OnClickListener registerButtonClickEvent = new Button.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String url = "http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + "/register";
+			String url = "http://revreserver.me:11663/users/" + user.getId().toString() + "/register";
 			JSONObject send_msg = new JSONObject();
 			try {
 				send_msg.put("subject_id", subject.getId());
@@ -107,7 +107,7 @@ public class DetailSubjectActivity extends Activity {
 	Button.OnClickListener unregisterButtonClickEvent = new Button.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String url = "http://dev.wafflestudio.net:10101/users/" + user.getId().toString() + "/unregister";
+			String url = "http://revreserver.me:11663/users/" + user.getId().toString() + "/unregister";
 			JSONObject send_msg = new JSONObject();
 			try {
 				send_msg.put("subject_id", subject.getId());
@@ -120,7 +120,7 @@ public class DetailSubjectActivity extends Activity {
 			new Unregister().execute(url, send_msg.toString());
 		}
 	};
-	//	"dev.wafflestudio.net:10101/users/" + user.getId() + "/register_subject"
+	//	"revreserver.me:11663/users/" + user.getId() + "/register_subject"
     private class Register extends AsyncTask<String, Boolean, String> {
         @Override
         protected String doInBackground(String... urls) {

@@ -398,7 +398,6 @@ int id pbHeaderProgress 0x7f09004a
 int id progress_circular 0x7f090007
 int id progress_horizontal 0x7f090008
 int id radio 0x7f09002b
-int id register 0x7f090054
 int id registerButton 0x7f090045
 int id resultListView 0x7f09004b
 int id search_badge 0x7f090035

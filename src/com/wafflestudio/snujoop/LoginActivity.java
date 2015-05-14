@@ -96,7 +96,7 @@ public class LoginActivity extends Activity {
 			}
 			String send_msg = jsonobjectStudentNumberPassword.toString();
 			
-			new RequestLogin().execute("http://dev.wafflestudio.net:10101/login", send_msg);
+			new RequestLogin().execute("http://revreserver.me:11663/login", send_msg);
     		findViewById(R.id.linlaHeaderProgress).setVisibility(View.VISIBLE);
     		((Button)findViewById(R.id.loginButton)).setEnabled(false);
 

@@ -20,7 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.Intent; 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -131,7 +131,7 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this, "fail to login or cancel", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/"
+			new LoadUserInformation().execute("http://revreserver.me:11663/users/"
 						+ user.getId().toString() + ".json?token=" + user.getToken());
 			break;
 		case RESULT_DETAILSUBJECT:
@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/"
+			new LoadUserInformation().execute("http://revreserver.me:11663/users/"
 					+ user.getId().toString() + ".json?token=" + user.getToken());
 			break;
 		case RESULT_FINDSUBJECT:
@@ -159,7 +159,7 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			new LoadUserInformation().execute("http://dev.wafflestudio.net:10101/users/"
+			new LoadUserInformation().execute("http://revreserver.me:11663/users/"
 					+ user.getId().toString() + ".json?token=" + user.getToken());
 			break;
 		}
@@ -168,7 +168,7 @@ public class MainActivity extends Activity {
     protected void Unregister() {
 		if (GCMRegistrar.isRegistered(this)) {
 			GCMRegistrar.unregister(this);
-			Toast.makeText(this, "±‚±‚∞° «ÿ¡ˆµ«æ˙Ω¿¥œ¥Ÿ.\n∑Œ±◊¿Œ Ω√ ¥ŸΩ√ µÓ∑œµÀ¥œ¥Ÿ.", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Ìï¥Ï†úÎêòÏóàÏäµÎãàÎã§.", Toast.LENGTH_LONG).show();
 		}
 	}
 

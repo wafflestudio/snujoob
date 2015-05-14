@@ -21,12 +21,12 @@ public class GCMIntentService extends GCMBaseIntentService {
     private Notification mNoti;
     private NotificationManager mNM;
     
-    //public ±âº» »ı¼ºÀÚ¸¦ ¹«Á¶°Ç ¸¸µé¾î¾ß ÇÑ´Ù.
+    //public ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
     public GCMIntentService(){ this(PROJECT_ID); }
    
     public GCMIntentService(String project_id) { super(project_id); }
  
-    /** Çª½Ã·Î ¹ŞÀº ¸Ş½ÃÁö */
+    /** Çªï¿½Ã·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ş½ï¿½ï¿½ï¿½ */
     @Override
     protected void onMessage(Context context, Intent intent) {
         Bundle b = intent.getExtras();
@@ -47,9 +47,9 @@ public class GCMIntentService extends GCMBaseIntentService {
         mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNoti = new NotificationCompat.Builder(getApplicationContext())
         		.setContentTitle("SNUJoop")
-        		.setContentText(data.get("subject_name") + " ¿¡¼­ ÀÚ¸®°¡ ³µ½À´Ï´Ù")
+        		.setContentText(data.get("subject_name") + " ê°€ ë¹„ì—ˆìŠµë‹ˆë‹¤.")
         		.setSmallIcon(R.drawable.ic_launcher)
-        		.setTicker("ÇØ´ç °ú¸ñ¿¡ ÀÚ¸®°¡ ³µ½À´Ï´Ù")
+        		.setTicker("ë“±ë¡í•œ ê³¼ëª©ì—ì„œ ìë¦¬ê°€ ë‚¬ìŠµë‹ˆë‹¤.")
         		.setAutoCancel(true)
         		.setOngoing(false)
         		.setVibrate(new long[] { 0, 100, 200, 300, 500 })
@@ -58,19 +58,19 @@ public class GCMIntentService extends GCMBaseIntentService {
         mNM.notify(Integer.parseInt(data.get("id")), mNoti);
     }
 
-    /**¿¡·¯ ¹ß»ı½Ã*/
+    /**ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½*/
     @Override
     protected void onError(Context context, String errorId) {
         Log.d(tag, "onError. errorId : "+errorId);
     }
  
-    /**´Ü¸»¿¡¼­ GCM ¼­ºñ½º µî·Ï ÇßÀ» ¶§ µî·Ï id¸¦ ¹Ş´Â´Ù*/
+    /**ï¿½Ü¸ï¿½ï¿½ï¿½ï¿½ï¿½ GCM ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ idï¿½ï¿½ ï¿½Ş´Â´ï¿½*/
     @Override
     protected void onRegistered(Context context, String regId) {
         Log.d(tag, "onRegistered. regId : "+regId);
     }
 
-    /**´Ü¸»¿¡¼­ GCM ¼­ºñ½º µî·Ï ÇØÁö¸¦ ÇÏ¸é ÇØÁöµÈ µî·Ï id¸¦ ¹Ş´Â´Ù*/
+    /**ï¿½Ü¸ï¿½ï¿½ï¿½ï¿½ï¿½ GCM ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ idï¿½ï¿½ ï¿½Ş´Â´ï¿½*/
     @Override
     protected void onUnregistered(Context context, String regId) {
         Log.d(tag, "onUnregistered. regId : "+regId);
