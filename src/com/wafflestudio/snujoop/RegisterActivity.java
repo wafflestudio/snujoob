@@ -54,7 +54,7 @@ public class RegisterActivity extends Activity {
 			}
 			String send_msg = jsonobjectStudentNumberPassword.toString();
 			
-			new RequestRegister().execute("http://revreserver.me:11663/users", send_msg);
+			new RequestRegister().execute(Http.HOME + "/users", send_msg);
     		findViewById(R.id.linlaHeaderProgress).setVisibility(View.VISIBLE);
     		((Button)findViewById(R.id.registerButton)).setEnabled(false);
 		}

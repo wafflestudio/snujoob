@@ -90,7 +90,7 @@ public class DetailSubjectActivity extends Activity {
 	Button.OnClickListener registerButtonClickEvent = new Button.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String url = "http://revreserver.me:11663/users/" + user.getId().toString() + "/register";
+			String url = Http.HOME + "/users/" + user.getId().toString() + "/register";
 			JSONObject send_msg = new JSONObject();
 			try {
 				send_msg.put("subject_id", subject.getId());

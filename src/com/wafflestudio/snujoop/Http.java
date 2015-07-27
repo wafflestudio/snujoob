@@ -15,6 +15,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.util.Log;
 
 public class Http {
+	final static String HOME = "http://snujoob.wafflestudio.com:11663";
+	
 	public static String GET(String url){
 		InputStream inputStream = null;
 		String result = "";

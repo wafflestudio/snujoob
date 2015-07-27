@@ -55,7 +55,7 @@ public class FindSubjectActivity extends Activity {
 		public void onClick(View v) {
 			String keyword = ((EditText)findViewById(R.id.keyword)).getText().toString().replaceAll("\\s+", "");
 			
-			new RequestFindSubject().execute("http://revreserver.me:11663/subjects/search.json?keyword=" + keyword);
+			new RequestFindSubject().execute(Http.HOME + "/subjects/search.json?keyword=" + keyword);
     		findViewById(R.id.linlaHeaderProgress).setVisibility(View.VISIBLE);
 		}
 	};
