@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/subjectName"
+        android:id="@+id/subject_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,11 +15,11 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/subjectNumber"
+        android:id="@+id/subject_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/subjectName"
+        android:layout_below="@+id/subject_name"
         android:padding="3sp"
         android:text="aaa"
         android:textSize="12sp" />
@@ -28,9 +28,9 @@
         android:id="@+id/lecturer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/subjectNumber"
-        android:layout_alignBottom="@+id/subjectNumber"
-        android:layout_toRightOf="@+id/subjectNumber"
+        android:layout_alignBaseline="@+id/subject_number"
+        android:layout_alignBottom="@+id/subject_number"
+        android:layout_toRightOf="@+id/subject_number"
         android:padding="3sp"
         android:text="aaa"
         android:textSize="12sp" />

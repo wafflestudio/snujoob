@@ -39,12 +39,12 @@ public class MainActivity extends Activity {
 		
 		user = new User((Integer)1, new ArrayList<Integer>(), null);
 		
-		findViewById(R.id.atferLogin).setVisibility(View.GONE);
+		findViewById(R.id.atfer_login).setVisibility(View.GONE);
 
-		((Button)findViewById(R.id.loginButton)).setOnClickListener(loginButtonClickEvent);
-		((Button)findViewById(R.id.registerButton)).setOnClickListener(registerButtonClickEvent);
-		((Button)findViewById(R.id.findButton)).setOnClickListener(findSubjectButtonClickEvent);
-		((Button)findViewById(R.id.unregisterButton)).setOnClickListener(unregisterButtonClickEvent);
+		((Button)findViewById(R.id.login_button)).setOnClickListener(loginButtonClickEvent);
+		((Button)findViewById(R.id.register_button)).setOnClickListener(registerButtonClickEvent);
+		((Button)findViewById(R.id.find_button)).setOnClickListener(findSubjectButtonClickEvent);
+		((Button)findViewById(R.id.unregister_button)).setOnClickListener(unregisterButtonClickEvent);
 	}
 	
 	Button.OnClickListener loginButtonClickEvent = new OnClickListener(){
@@ -208,23 +208,23 @@ public class MainActivity extends Activity {
 					}
 					
 					String[] from = {  "subject_name", "subject_number", "lecturer" };
-					int[] to = { R.id.subjectName, R.id.subjectNumber, R.id.lecturer };
+					int[] to = { R.id.subject_name, R.id.subject_number, R.id.lecturer };
 					adapter = new SimpleAdapter(getBaseContext(), subjectList, R.layout.subject_listview_content, from, to);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
         		
-        		ListView listView = (ListView)findViewById(R.id.subjectListView);
+        		ListView listView = (ListView)findViewById(R.id.subject_list_view);
         		listView.setAdapter(adapter);
         		listView.setOnItemClickListener(subjectItemClickListener);
 
-        		findViewById(R.id.loginButton).setVisibility(View.GONE);
-        		findViewById(R.id.registerButton).setVisibility(View.GONE);
-        		findViewById(R.id.unregisterButton).setVisibility(View.GONE);
-        		findViewById(R.id.linlaHeaderProgress).setVisibility(View.GONE);
+        		findViewById(R.id.login_button).setVisibility(View.GONE);
+        		findViewById(R.id.register_button).setVisibility(View.GONE);
+        		findViewById(R.id.unregister_button).setVisibility(View.GONE);
+        		findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
         		findViewById(R.id.developer).setVisibility(View.GONE);
-        		findViewById(R.id.atferLogin).setVisibility(View.VISIBLE);
+        		findViewById(R.id.atfer_login).setVisibility(View.VISIBLE);
         	}
     		else {
 				Toast.makeText(MainActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();

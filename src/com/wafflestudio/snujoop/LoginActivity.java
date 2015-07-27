@@ -68,16 +68,16 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		((EditText)findViewById(R.id.studentNumber)).setText(studentNumber);
+		((EditText)findViewById(R.id.student_number)).setText(studentNumber);
 		((EditText)findViewById(R.id.password)).setText(password);
 		
-		((Button)findViewById(R.id.loginButton)).setOnClickListener(loginButtonClickEvent);
+		((Button)findViewById(R.id.login_button)).setOnClickListener(loginButtonClickEvent);
 	}
 	
 	Button.OnClickListener loginButtonClickEvent = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String studentNumber = ((EditText)findViewById(R.id.studentNumber)).getText().toString();
+			String studentNumber = ((EditText)findViewById(R.id.student_number)).getText().toString();
 			String password = ((EditText)findViewById(R.id.password)).getText().toString();
 			if ( User.isStudentNumber(studentNumber) == false ){
 				Toast.makeText(LoginActivity.this, "please input the student number in format (20xx-xxxx).", Toast.LENGTH_SHORT).show();
@@ -97,12 +97,12 @@ public class LoginActivity extends Activity {
 			String send_msg = jsonobjectStudentNumberPassword.toString();
 			
 			new RequestLogin().execute(Http.HOME + "/login", send_msg);
-    		findViewById(R.id.linlaHeaderProgress).setVisibility(View.VISIBLE);
-    		((Button)findViewById(R.id.loginButton)).setEnabled(false);
+    		findViewById(R.id.linla_header_progress).setVisibility(View.VISIBLE);
+    		((Button)findViewById(R.id.login_button)).setEnabled(false);
 
 			String filename = "idpassword";
 			String string = null;
-			if ( ((CheckBox)findViewById(R.id.autoLoginCheckBox)).isChecked() ){
+			if ( ((CheckBox)findViewById(R.id.auto_login_checkbox)).isChecked() ){
 				string = studentNumber + "\n" + password;
 			} else {
 				string = "\n";
@@ -137,13 +137,13 @@ public class LoginActivity extends Activity {
 					jsonResult = new JSONObject(result);
 					if (jsonResult.get("result") == "fail"){
 						Toast.makeText(LoginActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
-			    		((Button)findViewById(R.id.loginButton)).setEnabled(true);
+			    		((Button)findViewById(R.id.login_button)).setEnabled(true);
 						return;
 					}
 					user = new User(jsonResult.getInt("id"), new ArrayList<Integer>(), jsonResult.getString("token"));
 				} catch (JSONException e) {
 					Toast.makeText(LoginActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
-		    		((Button)findViewById(R.id.loginButton)).setEnabled(true);
+		    		((Button)findViewById(R.id.login_button)).setEnabled(true);
 					e.printStackTrace();
 					return;
 				}
@@ -155,9 +155,9 @@ public class LoginActivity extends Activity {
         	}
     		else {
 				Toast.makeText(LoginActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();
-	    		((Button)findViewById(R.id.loginButton)).setEnabled(true);
+	    		((Button)findViewById(R.id.login_button)).setEnabled(true);
     		}
-    		findViewById(R.id.linlaHeaderProgress).setVisibility(View.GONE);
+    		findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
         }
     }
 }

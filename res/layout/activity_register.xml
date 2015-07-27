@@ -5,7 +5,7 @@
     tools:context="${relativePackage}.${activityClass}" >
     
     <LinearLayout
-        android:id="@+id/linlaHeaderProgress"
+        android:id="@+id/linla_header_progress"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
@@ -21,7 +21,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/studentNumber"
+        android:id="@+id/student_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -38,15 +38,15 @@
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/studentNumber"
-        android:layout_below="@+id/studentNumber"
+        android:layout_alignLeft="@+id/student_number"
+        android:layout_below="@+id/student_number"
         android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="@string/hint_password"
         android:inputType="textPassword" />
 
     <EditText
-        android:id="@+id/passwordConfirm"
+        android:id="@+id/password_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/password"
@@ -58,12 +58,12 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/passwordConfirm"
-        android:layout_alignRight="@+id/passwordConfirm"
-        android:layout_below="@+id/passwordConfirm"
+        android:layout_alignLeft="@+id/password_confirm"
+        android:layout_alignRight="@+id/password_confirm"
+        android:layout_below="@+id/password_confirm"
         android:layout_marginTop="30dp"
         android:text="@string/sign_up" />
 

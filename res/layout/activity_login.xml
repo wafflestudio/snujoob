@@ -5,7 +5,7 @@
     tools:context="${relativePackage}.${activityClass}" >
     
     <LinearLayout
-        android:id="@+id/linlaHeaderProgress"
+        android:id="@+id/linla_header_progress"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
@@ -21,7 +21,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/studentNumber"
+        android:id="@+id/student_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -38,7 +38,7 @@
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/studentNumber"
+        android:layout_below="@+id/student_number"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:ems="10"
@@ -46,22 +46,22 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/studentNumber"
-        android:layout_alignRight="@+id/studentNumber"
+        android:layout_alignLeft="@+id/student_number"
+        android:layout_alignRight="@+id/student_number"
         android:layout_below="@+id/password"
         android:layout_marginTop="40dp"
         android:text="@string/sign_in" />
 
     <CheckBox
-        android:id="@+id/autoLoginCheckBox"
+        android:id="@+id/auto_login_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/loginButton"
-        android:layout_alignRight="@+id/loginButton"
-        android:layout_below="@+id/loginButton"
+        android:layout_alignLeft="@+id/login_button"
+        android:layout_alignRight="@+id/login_button"
+        android:layout_below="@+id/login_button"
         android:layout_marginTop="0dp"
         android:text="@string/auto_login"
         android:checked="true" />

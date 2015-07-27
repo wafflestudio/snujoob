@@ -47,7 +47,7 @@ public class FindSubjectActivity extends Activity {
 		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
 		mainActivity.putExtra("userToken", user.getToken());
 		
-		((Button)findViewById(R.id.findButton)).setOnClickListener(findButtonClickEvent);
+		((Button)findViewById(R.id.find_button)).setOnClickListener(findButtonClickEvent);
 	}
 	
 	Button.OnClickListener findButtonClickEvent = new OnClickListener(){
@@ -56,7 +56,7 @@ public class FindSubjectActivity extends Activity {
 			String keyword = ((EditText)findViewById(R.id.keyword)).getText().toString().replaceAll("\\s+", "");
 			
 			new RequestFindSubject().execute(Http.HOME + "/subjects/search.json?keyword=" + keyword);
-    		findViewById(R.id.linlaHeaderProgress).setVisibility(View.VISIBLE);
+    		findViewById(R.id.linla_header_progress).setVisibility(View.VISIBLE);
 		}
 	};
 	
@@ -145,18 +145,18 @@ public class FindSubjectActivity extends Activity {
 					}
 					
 					String[] from = {  "subject_name", "subject_number", "lecturer" };
-					int[] to = { R.id.subjectName, R.id.subjectNumber, R.id.lecturer };
+					int[] to = { R.id.subject_name, R.id.subject_number, R.id.lecturer };
 					adapter = new SimpleAdapter(getBaseContext(), subjectList, R.layout.subject_listview_content, from, to);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
         		
-        		ListView listView = (ListView)findViewById(R.id.resultListView);
+        		ListView listView = (ListView)findViewById(R.id.result_list_view);
         		listView.setAdapter(adapter);
         		listView.setOnItemClickListener(subjectItemClickListener);
 
-        		findViewById(R.id.linlaHeaderProgress).setVisibility(View.GONE);
+        		findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
         	}
     		else {
 				Toast.makeText(FindSubjectActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();

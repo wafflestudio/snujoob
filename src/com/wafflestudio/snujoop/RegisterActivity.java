@@ -22,19 +22,19 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 
-		((Button)findViewById(R.id.registerButton)).setOnClickListener(registerButtonClickEvent);
+		((Button)findViewById(R.id.register_button)).setOnClickListener(registerButtonClickEvent);
 	}
 	
 	Button.OnClickListener registerButtonClickEvent = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String studentNumber = ((EditText)findViewById(R.id.studentNumber)).getText().toString();
+			String studentNumber = ((EditText)findViewById(R.id.student_number)).getText().toString();
 			if (User.isStudentNumber(studentNumber) == false){
 				Toast.makeText(RegisterActivity.this, "please input the student number in format (20xx-xxxx).", Toast.LENGTH_SHORT).show();
 				return;
 			}
 			String password = ((EditText)findViewById(R.id.password)).getText().toString();
-			String passwordConfirm = ((EditText)findViewById(R.id.passwordConfirm)).getText().toString();
+			String passwordConfirm = ((EditText)findViewById(R.id.password_confirm)).getText().toString();
 			
 			//TODO please make hashed password and send that to server.
 			
@@ -55,8 +55,8 @@ public class RegisterActivity extends Activity {
 			String send_msg = jsonobjectStudentNumberPassword.toString();
 			
 			new RequestRegister().execute(Http.HOME + "/users", send_msg);
-    		findViewById(R.id.linlaHeaderProgress).setVisibility(View.VISIBLE);
-    		((Button)findViewById(R.id.registerButton)).setEnabled(false);
+    		findViewById(R.id.linla_header_progress).setVisibility(View.VISIBLE);
+    		((Button)findViewById(R.id.register_button)).setEnabled(false);
 		}
 	};
 
@@ -79,7 +79,7 @@ public class RegisterActivity extends Activity {
 					jsonResult = new JSONObject(result);
 				} catch (JSONException e) {
 					Toast.makeText(RegisterActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
-		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
+		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
 					e.printStackTrace();
 					return;
 				}
@@ -88,31 +88,31 @@ public class RegisterActivity extends Activity {
 					requestRegisterResult = jsonResult.getString("result");
 				} catch (JSONException e) {
 					Toast.makeText(RegisterActivity.this, "there are no 'result'", Toast.LENGTH_SHORT).show();
-		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
+		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
 					e.printStackTrace();
 					return;
 				}
         		switch (requestRegisterResult){ 
         		case "already":
         			Toast.makeText(RegisterActivity.this, "already exist. please contact to 'glglgozz@wafflestudio.com'", Toast.LENGTH_LONG).show();
-		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
+		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
         			break;
         		case "success":
         			Toast.makeText(RegisterActivity.this, "success resgistering", Toast.LENGTH_LONG).show();
-		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
+		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
         			finish();
         			break;
         		case "fail":
         			Toast.makeText(RegisterActivity.this, "fail registering\nif something wrong, please connect to 'glglgozz@wafflestudio.com'", Toast.LENGTH_LONG).show();
-		    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
+		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
         			break;
         		}
         	}
     		else {
 				Toast.makeText(RegisterActivity.this, "please connect to Internet", Toast.LENGTH_SHORT).show();
-	    		((Button)findViewById(R.id.registerButton)).setEnabled(true);
+	    		((Button)findViewById(R.id.register_button)).setEnabled(true);
     		}
-    		findViewById(R.id.linlaHeaderProgress).setVisibility(View.GONE);
+    		findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
         }
     }
 }

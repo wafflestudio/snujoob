@@ -64,8 +64,8 @@ public class DetailSubjectActivity extends Activity {
 		findSubjectActivity.putExtra("userToken", user.getToken());
 		setResult(RESULT_OK, findSubjectActivity);
 		
-		((TextView)findViewById(R.id.subjectName)).setText(subject.getSubjectName());
-		((TextView)findViewById(R.id.subjectNumber)).setText("과목 번호: " 
+		((TextView)findViewById(R.id.subject_name)).setText(subject.getSubjectName());
+		((TextView)findViewById(R.id.subject_number)).setText("과목 번호: " 
 				+ subject.getSubjectNumber() + "  " + subject.getLectureNumber());
 		((TextView)findViewById(R.id.lecturer)).setText("" + subject.getLecturer());
 		((TextView)findViewById(R.id.capacity)).setText("정원 (재학생): " + capacity
@@ -75,16 +75,16 @@ public class DetailSubjectActivity extends Activity {
 			((TextView)findViewById(R.id.enrolled)).setTextColor(Color.parseColor("#FF0000"));
 
 		if (user.isMySubjectIdList(subject.getId())){
-			findViewById(R.id.registerButton).setVisibility(View.GONE);
-			findViewById(R.id.unregisterButton).setVisibility(View.VISIBLE);
+			findViewById(R.id.register_button).setVisibility(View.GONE);
+			findViewById(R.id.unregister_button).setVisibility(View.VISIBLE);
 		}
 		else{
-			findViewById(R.id.unregisterButton).setVisibility(View.GONE);
-			findViewById(R.id.registerButton).setVisibility(View.VISIBLE);
+			findViewById(R.id.unregister_button).setVisibility(View.GONE);
+			findViewById(R.id.register_button).setVisibility(View.VISIBLE);
 		}
 		
-		((Button)findViewById(R.id.registerButton)).setOnClickListener(registerButtonClickEvent);
-		((Button)findViewById(R.id.unregisterButton)).setOnClickListener(unregisterButtonClickEvent);
+		((Button)findViewById(R.id.register_button)).setOnClickListener(registerButtonClickEvent);
+		((Button)findViewById(R.id.unregister_button)).setOnClickListener(unregisterButtonClickEvent);
 	}
 	
 	Button.OnClickListener registerButtonClickEvent = new Button.OnClickListener(){
@@ -157,8 +157,8 @@ public class DetailSubjectActivity extends Activity {
         		setResult(RESULT_OK, mainActivity);
         		setResult(RESULT_OK, findSubjectActivity);
 
-    			findViewById(R.id.registerButton).setVisibility(View.GONE);
-    			findViewById(R.id.unregisterButton).setVisibility(View.VISIBLE);
+    			findViewById(R.id.register_button).setVisibility(View.GONE);
+    			findViewById(R.id.unregister_button).setVisibility(View.VISIBLE);
         	}
     		else {
 				Toast.makeText(DetailSubjectActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();
@@ -201,8 +201,8 @@ public class DetailSubjectActivity extends Activity {
         		setResult(RESULT_OK, mainActivity);
         		setResult(RESULT_OK, findSubjectActivity);
 
-    			findViewById(R.id.unregisterButton).setVisibility(View.GONE);
-    			findViewById(R.id.registerButton).setVisibility(View.VISIBLE);
+    			findViewById(R.id.unregister_button).setVisibility(View.GONE);
+    			findViewById(R.id.register_button).setVisibility(View.VISIBLE);
         	}
     		else {
 				Toast.makeText(DetailSubjectActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();

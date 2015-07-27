@@ -5,7 +5,7 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <Button
-        android:id="@+id/findButton"
+        android:id="@+id/find_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -16,10 +16,10 @@
         android:id="@+id/keyword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/findButton"
+        android:layout_alignBottom="@+id/find_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/findButton"
+        android:layout_toLeftOf="@+id/find_button"
         android:ems="10"
         android:inputType="text" >
 
@@ -27,7 +27,7 @@
     </EditText>
     
     <LinearLayout
-        android:id="@+id/linlaHeaderProgress"
+        android:id="@+id/linla_header_progress"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
@@ -43,7 +43,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/resultListView"
+        android:id="@+id/result_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

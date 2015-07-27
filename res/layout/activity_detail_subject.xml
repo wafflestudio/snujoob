@@ -13,14 +13,14 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/subjectName"
+            android:id="@+id/subject_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/subjectNumber"
+            android:id="@+id/subject_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Large Text"
@@ -50,7 +50,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -59,7 +59,7 @@
         android:text="Register" />
 
     <Button
-        android:id="@+id/unregisterButton"
+        android:id="@+id/unregister_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
