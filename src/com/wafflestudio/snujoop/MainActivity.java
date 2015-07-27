@@ -120,7 +120,7 @@ public class MainActivity extends Activity {
 			intent.putExtra("subjectNumber", hashmap.get("subject_number").split(" ")[0]);
 			intent.putExtra("lectureNumber", hashmap.get("subject_number").split(" ")[1]);
 			intent.putExtra("lecturer", hashmap.get("lecturer"));
-			//TODO 시간 추가
+			intent.putExtra("classTime", hashmap.get("class_time"));
 			intent.putExtra("capacity", Integer.parseInt(hashmap.get("capacity")));
 			intent.putExtra("capacityEnrolled", Integer.parseInt(hashmap.get("capacity_enrolled")));
 			intent.putExtra("enrolled", Integer.parseInt(hashmap.get("enrolled")));
@@ -167,6 +167,7 @@ public class MainActivity extends Activity {
 						String subjectName = jsonSubject.getString("subject_name");
 						String subjectNumber = jsonSubject.getString("subject_number") + " " + jsonSubject.getString("lecture_number");
 						String lecturer = jsonSubject.getString("lecturer");
+						String classTime = jsonSubject.getString("class_time");
 						Integer capacity = jsonSubject.getInt("capacity");
 						Integer capacityEnrolled = jsonSubject.getInt("capacity_enrolled");
 						Integer enrolled = jsonSubject.getInt("enrolled");
@@ -174,6 +175,7 @@ public class MainActivity extends Activity {
 						hashmap.put("subject_name", subjectName);
 						hashmap.put("subject_number", subjectNumber);
 						hashmap.put("lecturer", lecturer);
+						hashmap.put("class_time", classTime);
 						hashmap.put("capacity", capacity.toString());
 						hashmap.put("capacity_enrolled", capacityEnrolled.toString());
 						hashmap.put("enrolled", enrolled.toString());
@@ -183,8 +185,8 @@ public class MainActivity extends Activity {
 						//TODO 지금 등록된 정보 잘 갖고 있기
 					}
 					
-					String[] from = {  "subject_name", "subject_number", "lecturer" };
-					int[] to = { R.id.subject_name, R.id.subject_number, R.id.lecturer };
+					String[] from = {  "subject_name", "subject_number", "lecturer", "class_time" };
+					int[] to = { R.id.subject_name, R.id.subject_number, R.id.lecturer, R.id.class_time };
 					adapter = new SimpleAdapter(getBaseContext(), subjectList, R.layout.subject_listview_content, from, to);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

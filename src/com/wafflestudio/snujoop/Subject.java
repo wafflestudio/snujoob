@@ -6,6 +6,7 @@ class Subject {
 	private String subjectNumber;
 	private String lectureNumber;
 	private String lecturer;
+	private String classTime;
 	
 	Subject(){
 		id = 0;
@@ -13,13 +14,15 @@ class Subject {
 		subjectNumber = null;
 		lectureNumber = null;
 		lecturer = null;
+		classTime = null;
 	}
-	Subject(Integer id, String subjectName, String subjectNumber, String lectureNumber, String lecturer){
+	Subject(Integer id, String subjectName, String subjectNumber, String lectureNumber, String lecturer, String classTime){
 		this.id = id;
 		this.subjectName = subjectName;
 		this.subjectNumber = subjectNumber;
 		this.lectureNumber = lectureNumber;
 		this.lecturer = lecturer;
+		this.classTime = classTime;
 	}
 	void setId(int id){
 		this.id = id;
@@ -41,5 +44,8 @@ class Subject {
 	}
 	String getLecturer(){
 		return this.lecturer;
+	}
+	String getClassTime(){
+		return this.classTime;
 	}
 }

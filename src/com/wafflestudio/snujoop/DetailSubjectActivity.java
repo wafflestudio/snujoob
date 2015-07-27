@@ -35,7 +35,8 @@ public class DetailSubjectActivity extends Activity {
 					intent.getStringExtra("subjectName"),
 					intent.getStringExtra("subjectNumber"),
 					intent.getStringExtra("lectureNumber"),
-					intent.getStringExtra("lecturer")
+					intent.getStringExtra("lecturer"),
+					intent.getStringExtra("classTime")
 				);
 		Integer capacity = intent.getIntExtra("capacity", 0);
 		Integer capacityEnrolled = intent.getIntExtra("capacityEnrolled", 0);
@@ -49,6 +50,7 @@ public class DetailSubjectActivity extends Activity {
 		((TextView)findViewById(R.id.subject_number)).setText("과목 번호: " 
 				+ subject.getSubjectNumber() + "  " + subject.getLectureNumber());
 		((TextView)findViewById(R.id.lecturer)).setText("" + subject.getLecturer());
+		((TextView)findViewById(R.id.class_time)).setText("" + subject.getClassTime());
 		((TextView)findViewById(R.id.capacity)).setText("정원 (재학생): " + capacity
 				+ (capacityEnrolled != 0 ? " (" + capacityEnrolled + ")" : ""));
 		((TextView)findViewById(R.id.enrolled)).setText("등록한사람: " + enrolled);
