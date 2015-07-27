@@ -44,13 +44,16 @@ public class GCMIntentService extends GCMBaseIntentService {
         mainActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pi = PendingIntent.getActivity(this, 0, mainActivity, 0);
         
+        String message = String.format("%s 이(가) 비었습니다.\n%s %s\n%s"
+    			, data.get("subject_name")
+    			, data.get("subject_number")
+    			, data.get("lecture_number")
+    			, data.get("lecturer"));
         mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNoti = new NotificationCompat.Builder(getApplicationContext())
         		.setContentTitle("SNUJoop")
-        		.setContentText(data.get("subject_name")+" 이(가) 비었습니다."
-	        			+"\n("+data.get("lecturer")+" | "
-	        			+data.get("subject_number")+" "+data.get("lecture_number")+")")
-	        			//TODO 2줄로 보이게끔
+        		.setContentText(message)
+        		.setStyle(new NotificationCompat.BigTextStyle().bigText(message))
         		.setSmallIcon(R.drawable.ic_launcher)
         		.setTicker("등록한 과목에서 자리가 났습니다.")
         		.setAutoCancel(true)
