@@ -360,13 +360,14 @@ int id activity_chooser_view_content 0x7f090021
 int id always 0x7f090014
 int id atfer_login 0x7f090050
 int id auto_login_checkbox 0x7f09004f
+int id before_login 0x7f090052
 int id beginning 0x7f09001b
 int id capacity 0x7f090043
 int id checkbox 0x7f090029
 int id collapseActionView 0x7f090015
 int id decor_content_parent 0x7f09002f
 int id default_activity_button 0x7f090024
-int id developer 0x7f090052
+int id developer 0x7f090053
 int id dialog 0x7f090019
 int id disableHome 0x7f09000d
 int id dropdown 0x7f09001a
@@ -393,8 +394,8 @@ int id never 0x7f090017
 int id none 0x7f09000f
 int id normal 0x7f09000b
 int id password 0x7f09004d
-int id password_confirm 0x7f090053
-int id pbHeaderProgress 0x7f09004a
+int id password_confirm 0x7f090054
+int id pb_header_progress 0x7f09004a
 int id progress_circular 0x7f090007
 int id progress_horizontal 0x7f090008
 int id radio 0x7f09002b

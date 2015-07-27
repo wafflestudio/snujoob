@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -28,18 +29,27 @@ public class MainActivity extends Activity {
 	final static int RESULT_LOGIN = 1;
 	final static int RESULT_DETAILSUBJECT = 2;
 	final static int RESULT_FINDSUBJECT = 3;
-
-	User user = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		user = new User();
 		
-		user = new User((Integer)1, new ArrayList<Integer>(), null);
-		
-		findViewById(R.id.atfer_login).setVisibility(View.GONE);
+		//TODO 유저를 유지시키는 법
+		if (User.user == null && false){
+			//TODO 처음 실행했을 시에 자동 로그인
+		}
+
+		if (User.user == null){
+    		findViewById(R.id.before_login).setVisibility(View.VISIBLE);
+			findViewById(R.id.atfer_login).setVisibility(View.GONE);
+		} else {
+    		findViewById(R.id.before_login).setVisibility(View.GONE);
+    		findViewById(R.id.atfer_login).setVisibility(View.VISIBLE);
+			new LoadUserInformation().execute(Http.HOME + "/users/"
+					+ User.user.getId().toString() + ".json?token=" + User.user.getToken());
+			//TODO 계속 처불러오는 것보다는 static을 통한 데이터 유지에 대해서 생각해보기 (에러가 있을 수 있으려나)			
+		}
 
 		((Button)findViewById(R.id.login_button)).setOnClickListener(loginButtonClickEvent);
 		((Button)findViewById(R.id.register_button)).setOnClickListener(registerButtonClickEvent);
@@ -47,15 +57,33 @@ public class MainActivity extends Activity {
 		((Button)findViewById(R.id.unregister_button)).setOnClickListener(unregisterButtonClickEvent);
 	}
 	
-	Button.OnClickListener loginButtonClickEvent = new OnClickListener(){
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+
+		if (User.user == null){
+    		findViewById(R.id.before_login).setVisibility(View.VISIBLE);
+			findViewById(R.id.atfer_login).setVisibility(View.GONE);
+		} else {
+    		findViewById(R.id.before_login).setVisibility(View.GONE);
+    		findViewById(R.id.atfer_login).setVisibility(View.VISIBLE);
+        	findViewById(R.id.linla_header_progress).setVisibility(View.VISIBLE);
+			new LoadUserInformation().execute(Http.HOME + "/users/"
+					+ User.user.getId().toString() + ".json?token=" + User.user.getToken());
+			//TODO 계속 처불러오는 것보다는 static을 통한 데이터 유지에 대해서 생각해보기 (에러가 있을 수 있으려나)			
+		}
+	}
+	
+	OnClickListener loginButtonClickEvent = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-			startActivityForResult(intent, RESULT_LOGIN);
+			startActivity(intent);
 		}
 	};
 	
-	Button.OnClickListener registerButtonClickEvent = new OnClickListener(){
+	OnClickListener registerButtonClickEvent = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
@@ -63,42 +91,36 @@ public class MainActivity extends Activity {
 		}
 	};
 	
-	Button.OnClickListener findSubjectButtonClickEvent = new OnClickListener(){
+	OnClickListener findSubjectButtonClickEvent = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(MainActivity.this, FindSubjectActivity.class);
-			intent.putExtra("userId", user.getId());
-			intent.putExtra("subjectIdList", user.getSubjectIdList());
-			intent.putExtra("userToken", user.getToken());
-			
-			startActivityForResult(intent, RESULT_FINDSUBJECT);
+			startActivity(intent);
 		}
 	};
 	
-	Button.OnClickListener unregisterButtonClickEvent = new OnClickListener(){
+	OnClickListener unregisterButtonClickEvent = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
 			Unregister();
 		}
 	};
 
-	private AdapterView.OnItemClickListener subjectItemClickListener = new AdapterView.OnItemClickListener() {
-        @SuppressWarnings("unchecked")
+	OnItemClickListener subjectItemClickListener = new OnItemClickListener() {
+    	@SuppressWarnings("unchecked")
+    	//TODO 이거 없애기
 		@Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long l_position) {
             HashMap<String, String> hashmap = (HashMap<String, String>) parent.getAdapter().getItem(position);
             
 			Intent intent = new Intent(MainActivity.this, DetailSubjectActivity.class);
-			intent.putExtra("userId", user.getId());
-			intent.putExtra("subjectIdList", user.getSubjectIdList());
-			intent.putExtra("userToken", user.getToken());
-			
 			intent.putExtra("subjectId", Integer.parseInt(hashmap.get("id")));
 			intent.putExtra("subjectName", hashmap.get("subject_name"));
 			intent.putExtra("subjectNumber", hashmap.get("subject_number").split(" ")[0]);
 			intent.putExtra("lectureNumber", hashmap.get("subject_number").split(" ")[1]);
 			intent.putExtra("lecturer", hashmap.get("lecturer"));
+			//TODO 시간 추가
 			intent.putExtra("capacity", Integer.parseInt(hashmap.get("capacity")));
 			intent.putExtra("capacityEnrolled", Integer.parseInt(hashmap.get("capacity_enrolled")));
 			intent.putExtra("enrolled", Integer.parseInt(hashmap.get("enrolled")));
@@ -107,54 +129,7 @@ public class MainActivity extends Activity {
         }
     };
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent Data){
-		switch(requestCode){
-		case RESULT_LOGIN:
-			user = new User(
-						Data.getIntExtra("userId", -1),
-						Data.getIntegerArrayListExtra("subjectIdList"),
-						Data.getStringExtra("userToken")
-					);
-			if (user.getId() == -1){
-				user = null;
-				Toast.makeText(MainActivity.this, "fail to login or cancel", Toast.LENGTH_SHORT).show();
-				return;
-			}
-			new LoadUserInformation().execute(Http.HOME + "/users/"
-						+ user.getId().toString() + ".json?token=" + user.getToken());
-			break;
-		case RESULT_DETAILSUBJECT:
-			user = new User(
-						Data.getIntExtra("userId", -1),
-						Data.getIntegerArrayListExtra("subjectIdList"),
-						Data.getStringExtra("userToken")
-					);
-			if (user.getId() == -1){
-				user = null;
-				Toast.makeText(MainActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
-				return;
-			}
-			new LoadUserInformation().execute(Http.HOME + "/users/"
-					+ user.getId().toString() + ".json?token=" + user.getToken());
-			break;
-		case RESULT_FINDSUBJECT:
-			user = new User(
-					Data.getIntExtra("userId", -1),
-					Data.getIntegerArrayListExtra("subjectIdList"),
-					Data.getStringExtra("userToken")
-				);
-			if (user.getId() == -1){
-				user = null;
-				Toast.makeText(MainActivity.this, "fail to login", Toast.LENGTH_SHORT).show();
-				return;
-			}
-			new LoadUserInformation().execute(Http.HOME + "/users/"
-					+ user.getId().toString() + ".json?token=" + user.getToken());
-			break;
-		}
-	}
-	
-    protected void Unregister() {
+    void Unregister() {
 		if (GCMRegistrar.isRegistered(this)) {
 			GCMRegistrar.unregister(this);
 			Toast.makeText(this, "해제되었습니다.", Toast.LENGTH_LONG).show();
@@ -164,7 +139,7 @@ public class MainActivity extends Activity {
 	private class LoadUserInformation extends AsyncTask<String, Boolean, String> {
         @Override
         protected String doInBackground(String... urls) {
-        		
+        	
             return Http.GET(urls[0]);
         }
         // onPostExecute displays the results of the AsyncTask.
@@ -175,7 +150,7 @@ public class MainActivity extends Activity {
             
         	if(result != null){
         		Log.d("ASYNC", "result = " + result);
-        		user.getSubjectIdList().clear();
+        		User.user.getSubjectIdList().clear();
         		JSONObject jsonResult = null;
         		JSONArray jsonSubjectList = null;
         		SimpleAdapter adapter = null;
@@ -204,7 +179,8 @@ public class MainActivity extends Activity {
 						hashmap.put("enrolled", enrolled.toString());
 						subjectList.add(hashmap);
 						
-						user.appendMySubjectIdList(jsonSubject.getInt("id"));
+						User.user.appendMySubjectIdList(jsonSubject.getInt("id"));
+						//TODO 지금 등록된 정보 잘 갖고 있기
 					}
 					
 					String[] from = {  "subject_name", "subject_number", "lecturer" };
@@ -219,15 +195,11 @@ public class MainActivity extends Activity {
         		listView.setAdapter(adapter);
         		listView.setOnItemClickListener(subjectItemClickListener);
 
-        		findViewById(R.id.login_button).setVisibility(View.GONE);
-        		findViewById(R.id.register_button).setVisibility(View.GONE);
-        		findViewById(R.id.unregister_button).setVisibility(View.GONE);
-        		findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
-        		findViewById(R.id.developer).setVisibility(View.GONE);
-        		findViewById(R.id.atfer_login).setVisibility(View.VISIBLE);
+            	findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
         	}
     		else {
 				Toast.makeText(MainActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();
+				//정체불명의 인터넷 코드
     		}
         }
     }

@@ -24,8 +24,6 @@ import android.widget.Toast;
 
 public class FindSubjectActivity extends Activity {
 
-	Intent mainActivity = null;
-	User user = null;
 	ArrayList<Subject> subjectList = null;
 
 	@Override
@@ -33,20 +31,8 @@ public class FindSubjectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_find_subject);
 		
-		Intent intent = getIntent();
 		subjectList = new ArrayList<Subject>();
-		mainActivity = new Intent(FindSubjectActivity.this, MainActivity.class);
-		setResult(RESULT_OK, mainActivity);
 
-		user = new User(
-					intent.getIntExtra("userId", -1),
-					intent.getIntegerArrayListExtra("subjectIdList"),
-					intent.getStringExtra("userToken")
-				);
-		mainActivity.putExtra("userId", user.getId());
-		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
-		mainActivity.putExtra("userToken", user.getToken());
-		
 		((Button)findViewById(R.id.find_button)).setOnClickListener(findButtonClickEvent);
 	}
 	
@@ -54,26 +40,14 @@ public class FindSubjectActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			String keyword = ((EditText)findViewById(R.id.keyword)).getText().toString().replaceAll("\\s+", "");
-			
+			if (keyword.equals("")){
+				Toast.makeText(FindSubjectActivity.this, "검색어를 입력해주세요.", Toast.LENGTH_LONG).show();
+				return;
+			}
 			new RequestFindSubject().execute(Http.HOME + "/subjects/search.json?keyword=" + keyword);
     		findViewById(R.id.linla_header_progress).setVisibility(View.VISIBLE);
 		}
 	};
-	
-	protected void onActivityResult(int requestCode, int resultCode, Intent Data){
-		switch(requestCode){
-		case MainActivity.RESULT_DETAILSUBJECT:
-			user = new User(
-					Data.getIntExtra("userId", -1),
-					Data.getIntegerArrayListExtra("subjectIdList"),
-					Data.getStringExtra("userToken")
-				);
-			mainActivity.putExtra("userId", user.getId());
-			mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
-			mainActivity.putExtra("userToken", user.getToken());
-			break;
-		}
-	}
 
 	private AdapterView.OnItemClickListener subjectItemClickListener = new AdapterView.OnItemClickListener() {
 		@SuppressWarnings("unchecked")
@@ -83,20 +57,17 @@ public class FindSubjectActivity extends Activity {
 			HashMap<String, String> hashmap = (HashMap<String, String>) parent.getAdapter().getItem(position);
             
 			Intent intent = new Intent(FindSubjectActivity.this, DetailSubjectActivity.class);
-			intent.putExtra("userId", user.getId());
-			intent.putExtra("subjectIdList", user.getSubjectIdList());
-			intent.putExtra("userToken", user.getToken());
-			
 			intent.putExtra("subjectId", Integer.parseInt(hashmap.get("id")));
 			intent.putExtra("subjectName", hashmap.get("subject_name"));
 			intent.putExtra("subjectNumber", hashmap.get("subject_number").split(" ")[0]);
 			intent.putExtra("lectureNumber", hashmap.get("subject_number").split(" ")[1]);
 			intent.putExtra("lecturer", hashmap.get("lecturer"));
+			//TODO 시간 추가
 			intent.putExtra("capacity", Integer.parseInt(hashmap.get("capacity")));
 			intent.putExtra("capacityEnrolled", Integer.parseInt(hashmap.get("capacity_enrolled")));
 			intent.putExtra("enrolled", Integer.parseInt(hashmap.get("enrolled")));
 
-			startActivityForResult(intent, MainActivity.RESULT_DETAILSUBJECT);
+			startActivity(intent);
         }
     };
     
@@ -138,6 +109,7 @@ public class FindSubjectActivity extends Activity {
 						hashmap.put("subject_name", subjectName);
 						hashmap.put("subject_number", subjectNumber);
 						hashmap.put("lecturer", lecturer);
+						//TODO 시간 추가
 						hashmap.put("capacity", capacity.toString());
 						hashmap.put("capacity_enrolled", capacityEnrolled.toString());
 						hashmap.put("enrolled", enrolled.toString());

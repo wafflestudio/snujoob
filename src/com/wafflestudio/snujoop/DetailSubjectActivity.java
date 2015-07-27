@@ -16,10 +16,7 @@ import android.widget.Toast;
 
 public class DetailSubjectActivity extends Activity {
 
-	Intent mainActivity = null;
-	Intent findSubjectActivity = null;
 	Subject subject = null;
-	User user;
 	
 	@Override
 	public void onBackPressed(){
@@ -33,14 +30,6 @@ public class DetailSubjectActivity extends Activity {
 		setContentView(R.layout.activity_detail_subject);
 		
 		Intent intent = getIntent();
-		mainActivity = new Intent(DetailSubjectActivity.this, MainActivity.class);
-		findSubjectActivity = new Intent(DetailSubjectActivity.this, FindSubjectActivity.class);
-
-		user = new User(
-					intent.getIntExtra("userId", -1),
-					intent.getIntegerArrayListExtra("subjectIdList"),
-					intent.getStringExtra("userToken")
-				);
 		subject = new Subject(
 					intent.getIntExtra("subjectId", -1),
 					intent.getStringExtra("subjectName"),
@@ -51,18 +40,10 @@ public class DetailSubjectActivity extends Activity {
 		Integer capacity = intent.getIntExtra("capacity", 0);
 		Integer capacityEnrolled = intent.getIntExtra("capacityEnrolled", 0);
 		Integer enrolled = intent.getIntExtra("enrolled", 0);
-		if (subject.getId() == -1 || user.getId() == -1){
+		if (subject.getId() == -1 || User.user == null){
 			Toast.makeText(DetailSubjectActivity.this, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		mainActivity.putExtra("userId", user.getId());
-		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
-		mainActivity.putExtra("userToken", user.getToken());
-		setResult(RESULT_OK, mainActivity);
-		findSubjectActivity.putExtra("userId", user.getId());
-		findSubjectActivity.putExtra("subjectIdList", user.getSubjectIdList());
-		findSubjectActivity.putExtra("userToken", user.getToken());
-		setResult(RESULT_OK, findSubjectActivity);
 		
 		((TextView)findViewById(R.id.subject_name)).setText(subject.getSubjectName());
 		((TextView)findViewById(R.id.subject_number)).setText("과목 번호: " 
@@ -74,7 +55,7 @@ public class DetailSubjectActivity extends Activity {
 		if (enrolled >= capacity)
 			((TextView)findViewById(R.id.enrolled)).setTextColor(Color.parseColor("#FF0000"));
 
-		if (user.isMySubjectIdList(subject.getId())){
+		if (User.user.isMySubjectIdList(subject.getId())){
 			findViewById(R.id.register_button).setVisibility(View.GONE);
 			findViewById(R.id.unregister_button).setVisibility(View.VISIBLE);
 		}
@@ -90,11 +71,11 @@ public class DetailSubjectActivity extends Activity {
 	Button.OnClickListener registerButtonClickEvent = new Button.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String url = Http.HOME + "/users/" + user.getId().toString() + "/register";
+			String url = Http.HOME + "/users/" + User.user.getId().toString() + "/register";
 			JSONObject send_msg = new JSONObject();
 			try {
 				send_msg.put("subject_id", subject.getId());
-				send_msg.put("token", user.getToken());
+				send_msg.put("token", User.user.getToken());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -107,11 +88,11 @@ public class DetailSubjectActivity extends Activity {
 	Button.OnClickListener unregisterButtonClickEvent = new Button.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String url = "http://revreserver.me:11663/users/" + user.getId().toString() + "/unregister";
+			String url = Http.HOME + "/users/" + User.user.getId().toString() + "/unregister";
 			JSONObject send_msg = new JSONObject();
 			try {
 				send_msg.put("subject_id", subject.getId());
-				send_msg.put("token", user.getToken());
+				send_msg.put("token", User.user.getToken());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -120,7 +101,7 @@ public class DetailSubjectActivity extends Activity {
 			new Unregister().execute(url, send_msg.toString());
 		}
 	};
-	//	"revreserver.me:11663/users/" + user.getId() + "/register_subject"
+	//	Http.HOME + "users/" + user.getId() + "/register_subject"
     private class Register extends AsyncTask<String, Boolean, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -150,12 +131,7 @@ public class DetailSubjectActivity extends Activity {
         			return;
         		}
         		Toast.makeText(DetailSubjectActivity.this, "register", Toast.LENGTH_SHORT).show();
-        		user.appendMySubjectIdList(subject.getId());
-
-        		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
-        		findSubjectActivity.putExtra("subjectIdList", user.getSubjectIdList());
-        		setResult(RESULT_OK, mainActivity);
-        		setResult(RESULT_OK, findSubjectActivity);
+        		User.user.appendMySubjectIdList(subject.getId());
 
     			findViewById(R.id.register_button).setVisibility(View.GONE);
     			findViewById(R.id.unregister_button).setVisibility(View.VISIBLE);
@@ -194,13 +170,8 @@ public class DetailSubjectActivity extends Activity {
         			return;
         		}
         		Toast.makeText(DetailSubjectActivity.this, "unregister", Toast.LENGTH_SHORT).show();
-        		user.deleteMySubjectIdList(subject.getId());
+        		User.user.deleteMySubjectIdList(subject.getId());
         		
-        		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
-        		findSubjectActivity.putExtra("subjectIdList", user.getSubjectIdList());
-        		setResult(RESULT_OK, mainActivity);
-        		setResult(RESULT_OK, findSubjectActivity);
-
     			findViewById(R.id.unregister_button).setVisibility(View.GONE);
     			findViewById(R.id.register_button).setVisibility(View.VISIBLE);
         	}

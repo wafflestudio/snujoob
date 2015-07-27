@@ -10,7 +10,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,17 +24,12 @@ import com.google.android.gcm.GCMRegistrar;
 
 public class LoginActivity extends Activity {
 	
-	Intent mainActivity = null;
-	User user = null;
 	String regIdToServer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-
-		mainActivity = new Intent(LoginActivity.this, MainActivity.class);
-		setResult(RESULT_CANCELED, mainActivity);
 
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.checkManifest(this);
@@ -140,24 +134,20 @@ public class LoginActivity extends Activity {
 			    		((Button)findViewById(R.id.login_button)).setEnabled(true);
 						return;
 					}
-					user = new User(jsonResult.getInt("id"), new ArrayList<Integer>(), jsonResult.getString("token"));
+					User.user = new User(jsonResult.getInt("id"), new ArrayList<Integer>(), jsonResult.getString("token"));
 				} catch (JSONException e) {
 					Toast.makeText(LoginActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
 		    		((Button)findViewById(R.id.login_button)).setEnabled(true);
 					e.printStackTrace();
 					return;
 				}
-        		mainActivity.putExtra("userId", user.getId());
-        		mainActivity.putExtra("subjectIdList", user.getSubjectIdList());
-        		mainActivity.putExtra("userToken", user.getToken());
-        		setResult(RESULT_OK, mainActivity);
         		finish();
         	}
     		else {
 				Toast.makeText(LoginActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();
-	    		((Button)findViewById(R.id.login_button)).setEnabled(true);
+				((Button)findViewById(R.id.login_button)).setEnabled(true);
     		}
-    		findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
+        	findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
         }
     }
 }

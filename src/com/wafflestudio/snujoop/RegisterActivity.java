@@ -15,8 +15,6 @@ import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
 	
-	User user;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

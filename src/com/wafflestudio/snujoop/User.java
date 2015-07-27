@@ -8,6 +8,8 @@ public class User {
 	private ArrayList<Integer> mySubjectIdList = null;
 	private String token;
 	
+	public static User user = null;
+	
 	User(){
 		id = null;
 		mySubjectIdList = new ArrayList<Integer>();
