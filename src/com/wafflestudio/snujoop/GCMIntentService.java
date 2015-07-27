@@ -47,7 +47,10 @@ public class GCMIntentService extends GCMBaseIntentService {
         mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNoti = new NotificationCompat.Builder(getApplicationContext())
         		.setContentTitle("SNUJoop")
-        		.setContentText(data.get("subject_name") + " 가 비었습니다.")
+        		.setContentText(data.get("subject_name")+" 이(가) 비었습니다."
+	        			+"\n("+data.get("lecturer")+" | "
+	        			+data.get("subject_number")+" "+data.get("lecture_number")+")")
+	        			//TODO 2줄로 보이게끔
         		.setSmallIcon(R.drawable.ic_launcher)
         		.setTicker("등록한 과목에서 자리가 났습니다.")
         		.setAutoCancel(true)

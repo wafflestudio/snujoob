@@ -64,7 +64,7 @@ public class RegisterActivity extends Activity {
         @Override
         protected String doInBackground(String... urls) {
  
-            return MainActivity.POST(urls[0], urls[1]);
+            return Http.POST(urls[0], urls[1]);
         }
         // onPostExecute displays the results of the AsyncTask.
         

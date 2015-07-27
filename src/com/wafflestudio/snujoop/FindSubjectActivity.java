@@ -104,7 +104,7 @@ public class FindSubjectActivity extends Activity {
         @Override
         protected String doInBackground(String... urls) {
         	
-            return MainActivity.GET(urls[0]);
+            return Http.GET(urls[0]);
         }
         // onPostExecute displays the results of the AsyncTask.
         

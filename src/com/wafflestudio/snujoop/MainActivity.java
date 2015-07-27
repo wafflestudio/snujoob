@@ -20,7 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Intent; 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
         @Override
         protected String doInBackground(String... urls) {
         		
-            return GET(urls[0]);
+            return Http.GET(urls[0]);
         }
         // onPostExecute displays the results of the AsyncTask.
         
@@ -242,159 +242,4 @@ public class MainActivity extends Activity {
     		}
         }
     }
-	
-	public static String GET(String url){
-		InputStream inputStream = null;
-		String result = "";
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
-			inputStream = httpResponse.getEntity().getContent();	
-			if(inputStream != null){
-		        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-		        String line = "";
-		        String temp = "";
-		        while((line = bufferedReader.readLine()) != null)
-		            temp += line;
-		        inputStream.close();
-		        result = new String(temp);
-			}
-			else
-				result = "Did not work!";
-
-		} catch (Exception e) {
-			Log.d("InputStream", e.getLocalizedMessage());
-		}
-		return result;
-	}
-	
-	public static String POST(String url, String send_msg){
-		StringBuilder JSONdata = new StringBuilder();
-		InputStream inputStream = null;
-		byte[] buffer = new byte[1024];
-		String result = null;
-		
-		try {
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(url);
-			StringEntity se = new StringEntity(send_msg);
-			httpPost.setEntity(se);
-			httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            inputStream = httpResponse.getEntity().getContent();
-            if(inputStream != null){
-                try {
-                    int bytesRead = 0;
-                    BufferedInputStream bis = new BufferedInputStream(inputStream);
-                    while ((bytesRead = bis.read(buffer) ) != -1) {
-                        String line = new String(buffer, 0, bytesRead);
-                        JSONdata.append(line);
-                    }
-                    result = JSONdata.toString();
-                } catch (Exception e) {
-                    Log.e("logcat", Log.getStackTraceString(e));
-                } finally {
-                    try {
-                        inputStream.close();
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-            else{
-                result = "{'result' : 'fail'}";
-            }
-        } catch (Exception e) {
-        	Log.d("InputStream", e.getLocalizedMessage());
-        }
-		return result;
-	}
-}
-
-class Subject {
-	private Integer id;
-	private String subjectName;
-	private String subjectNumber;
-	private String lectureNumber;
-	private String lecturer;
-	
-	Subject(){
-		id = 0;
-		subjectName = null;
-		subjectNumber = null;
-		lectureNumber = null;
-		lecturer = null;
-	}
-	Subject(Integer id, String subjectName, String subjectNumber, String lectureNumber, String lecturer){
-		this.id = id;
-		this.subjectName = subjectName;
-		this.subjectNumber = subjectNumber;
-		this.lectureNumber = lectureNumber;
-		this.lecturer = lecturer;
-	}
-	void setId(int id){
-		this.id = id;
-	}
-	void setName(String name){
-		this.subjectName = name;
-	}
-	Integer getId(){
-		return this.id;
-	}
-	String getSubjectName(){
-		return this.subjectName;
-	}
-	String getSubjectNumber(){
-		return this.subjectNumber;
-	}
-	String getLectureNumber(){
-		return this.lectureNumber;
-	}
-	String getLecturer(){
-		return this.lecturer;
-	}
-}
-
-class User {
-	private Integer id;
-	private ArrayList<Integer> mySubjectIdList = null;
-	private String token;
-	
-	User(){
-		id = null;
-		mySubjectIdList = new ArrayList<Integer>();
-		token = null;
-	}
-	User(Integer id, ArrayList<Integer> subjectIdList, String token){
-		this.id = id;
-		mySubjectIdList = subjectIdList;
-		this.token = token;
-	}
-	Integer getId(){
-		return this.id;
-	}
-	ArrayList<Integer> getSubjectIdList(){
-		return this.mySubjectIdList;
-	}
-	String getToken(){
-		return this.token;
-	}
-	void setId(Integer id){
-		this.id = id;
-	}
-	void appendMySubjectIdList(Integer id){
-		mySubjectIdList.add(id);
-	}
-	void deleteMySubjectIdList(Integer id){
-		mySubjectIdList.remove(id);
-	}
-	Boolean isMySubjectIdList(Integer id){
-		return mySubjectIdList.contains(id);
-	}
-	static Boolean isStudentNumber(String studentNumber){
-		return Pattern.matches("20[0-9]{2}-[0-9]{5}", studentNumber);
-	}
-	void setToken(String token){
-		this.token = token;
-	}
 }
