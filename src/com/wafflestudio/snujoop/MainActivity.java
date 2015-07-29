@@ -48,13 +48,36 @@ public class MainActivity extends Activity {
     		findViewById(R.id.atfer_login).setVisibility(View.VISIBLE);
 			new LoadUserInformation().execute(Http.HOME + "/users/"
 					+ User.user.getId().toString() + ".json?token=" + User.user.getToken());
-			//TODO 계속 처불러오는 것보다는 static을 통한 데이터 유지에 대해서 생각해보기 (에러가 있을 수 있으려나)			
+			//TODO 계속 처불러오는 것보다는 static을 통한 데이터 유지에 대해서 생각해보기 (에러가 있을 수 있으려나)
 		}
 
-		((Button)findViewById(R.id.login_button)).setOnClickListener(loginButtonClickEvent);
-		((Button)findViewById(R.id.register_button)).setOnClickListener(registerButtonClickEvent);
-		((Button)findViewById(R.id.find_button)).setOnClickListener(findSubjectButtonClickEvent);
-		((Button)findViewById(R.id.unregister_button)).setOnClickListener(unregisterButtonClickEvent);
+		((Button)findViewById(R.id.login_button)).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+				startActivity(intent);
+			}
+		});
+		((Button)findViewById(R.id.register_button)).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+				startActivity(intent);
+			}
+		});
+		((Button)findViewById(R.id.find_button)).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, FindSubjectActivity.class);
+				startActivity(intent);
+			}
+		});
+		((Button)findViewById(R.id.unregister_button)).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Unregister();
+			}
+		});
 	}
 	
 	@Override
@@ -71,40 +94,9 @@ public class MainActivity extends Activity {
         	findViewById(R.id.linla_header_progress).setVisibility(View.VISIBLE);
 			new LoadUserInformation().execute(Http.HOME + "/users/"
 					+ User.user.getId().toString() + ".json?token=" + User.user.getToken());
-			//TODO 계속 처불러오는 것보다는 static을 통한 데이터 유지에 대해서 생각해보기 (에러가 있을 수 있으려나)			
+			//TODO 계속 처불러오는 것보다는 static을 통한 데이터 유지에 대해서 생각해보기 (에러가 있을 수 있으려나)
 		}
 	}
-	
-	OnClickListener loginButtonClickEvent = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-			startActivity(intent);
-		}
-	};
-	
-	OnClickListener registerButtonClickEvent = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-			startActivity(intent);
-		}
-	};
-	
-	OnClickListener findSubjectButtonClickEvent = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent(MainActivity.this, FindSubjectActivity.class);
-			startActivity(intent);
-		}
-	};
-	
-	OnClickListener unregisterButtonClickEvent = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			Unregister();
-		}
-	};
 
 	OnItemClickListener subjectItemClickListener = new OnItemClickListener() {
     	@SuppressWarnings("unchecked")
@@ -112,20 +104,20 @@ public class MainActivity extends Activity {
 		@Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long l_position) {
-            HashMap<String, String> hashmap = (HashMap<String, String>) parent.getAdapter().getItem(position);
+            HashMap<String, String> subject = (HashMap<String, String>) parent.getAdapter().getItem(position);
             
 			Intent intent = new Intent(MainActivity.this, DetailSubjectActivity.class);
-			intent.putExtra("subjectId", Integer.parseInt(hashmap.get("id")));
-			intent.putExtra("subjectName", hashmap.get("subject_name"));
-			intent.putExtra("subjectNumber", hashmap.get("subject_number").split(" ")[0]);
-			intent.putExtra("lectureNumber", hashmap.get("subject_number").split(" ")[1]);
-			intent.putExtra("lecturer", hashmap.get("lecturer"));
-			intent.putExtra("classTime", hashmap.get("class_time"));
-			intent.putExtra("capacity", Integer.parseInt(hashmap.get("capacity")));
-			intent.putExtra("capacityEnrolled", Integer.parseInt(hashmap.get("capacity_enrolled")));
-			intent.putExtra("enrolled", Integer.parseInt(hashmap.get("enrolled")));
+			intent.putExtra("subjectId", Integer.parseInt(subject.get("id")));
+			intent.putExtra("subjectName", subject.get("subject_name"));
+			intent.putExtra("subjectNumber", subject.get("subject_number").split(" ")[0]);
+			intent.putExtra("lectureNumber", subject.get("subject_number").split(" ")[1]);
+			intent.putExtra("lecturer", subject.get("lecturer"));
+			intent.putExtra("classTime", subject.get("class_time"));
+			intent.putExtra("capacity", Integer.parseInt(subject.get("capacity")));
+			intent.putExtra("capacityEnrolled", Integer.parseInt(subject.get("capacity_enrolled")));
+			intent.putExtra("enrolled", Integer.parseInt(subject.get("enrolled")));
 
-			startActivityForResult(intent, MainActivity.RESULT_DETAILSUBJECT);
+			startActivity(intent);
         }
     };
 	

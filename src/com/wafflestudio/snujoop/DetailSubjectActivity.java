@@ -42,7 +42,7 @@ public class DetailSubjectActivity extends Activity {
 		Integer capacityEnrolled = intent.getIntExtra("capacityEnrolled", 0);
 		Integer enrolled = intent.getIntExtra("enrolled", 0);
 		if (subject.getId() == -1 || User.user == null){
-			Toast.makeText(DetailSubjectActivity.this, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(DetailSubjectActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
@@ -84,6 +84,7 @@ public class DetailSubjectActivity extends Activity {
 				return;
 			}
 			new Register().execute(url, send_msg.toString());
+			findViewById(R.id.register_button).setClickable(false);
 		}
 	};
 	
@@ -101,6 +102,7 @@ public class DetailSubjectActivity extends Activity {
 				return;
 			}
 			new Unregister().execute(url, send_msg.toString());
+			findViewById(R.id.unregister_button).setClickable(false);
 		}
 	};
 	//	Http.HOME + "users/" + user.getId() + "/register_subject"
@@ -118,28 +120,28 @@ public class DetailSubjectActivity extends Activity {
             
         	if(result != null){
         		Log.d("ASYNC", "result = " + result);
-        		JSONObject jsonResult = null;
-        		String registerResult = "";
+        		JSONObject jsonResult;
+        		String registerResult;
         		try {
 					jsonResult = new JSONObject(result);
 					registerResult = jsonResult.getString("result");
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					Toast.makeText(DetailSubjectActivity.this, getString(R.string.json_parsing_error_message), Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 					return;
 				}
-        		if (!registerResult.equals("success")){
-        			Toast.makeText(DetailSubjectActivity.this, "fail to register", Toast.LENGTH_SHORT).show();
-        			return;
+        		if (registerResult.equals("success")){
+	        		Toast.makeText(DetailSubjectActivity.this, getString(R.string.register_suceess_message), Toast.LENGTH_SHORT).show();
+	        		User.user.appendMySubjectIdList(subject.getId());
+	    			findViewById(R.id.register_button).setClickable(true);
+	    			findViewById(R.id.register_button).setVisibility(View.GONE);
+	    			findViewById(R.id.unregister_button).setVisibility(View.VISIBLE);
+        		} else {
+        			Toast.makeText(DetailSubjectActivity.this, getString(R.string.register_failure_message), Toast.LENGTH_SHORT).show();
         		}
-        		Toast.makeText(DetailSubjectActivity.this, "register", Toast.LENGTH_SHORT).show();
-        		User.user.appendMySubjectIdList(subject.getId());
-
-    			findViewById(R.id.register_button).setVisibility(View.GONE);
-    			findViewById(R.id.unregister_button).setVisibility(View.VISIBLE);
         	}
     		else {
-				Toast.makeText(DetailSubjectActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DetailSubjectActivity.this, getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
     		}
         }
     }
@@ -157,28 +159,28 @@ public class DetailSubjectActivity extends Activity {
         	super.onPostExecute(result);
             
         	if(result != null){
-        		JSONObject jsonResult = null;
-        		String registerResult = "";
+        		JSONObject jsonResult;
+        		String registerResult;
         		try {
 					jsonResult = new JSONObject(result);
 					registerResult = jsonResult.getString("result");
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					Toast.makeText(DetailSubjectActivity.this, getString(R.string.json_parsing_error_message), Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 					return;
 				}
-        		if (!registerResult.equals("success")){	
-        			Toast.makeText(DetailSubjectActivity.this, "fail to unregister", Toast.LENGTH_SHORT).show();
-        			return;
+        		if (registerResult.equals("success")){
+            		Toast.makeText(DetailSubjectActivity.this, getString(R.string.unregister_success_message), Toast.LENGTH_SHORT).show();
+            		User.user.deleteMySubjectIdList(subject.getId());
+        			findViewById(R.id.unregister_button).setClickable(true);
+        			findViewById(R.id.unregister_button).setVisibility(View.GONE);
+        			findViewById(R.id.register_button).setVisibility(View.VISIBLE);
+        		} else {
+        			Toast.makeText(DetailSubjectActivity.this, R.string.unregister__failure_message, Toast.LENGTH_SHORT).show();
         		}
-        		Toast.makeText(DetailSubjectActivity.this, "unregister", Toast.LENGTH_SHORT).show();
-        		User.user.deleteMySubjectIdList(subject.getId());
-        		
-    			findViewById(R.id.unregister_button).setVisibility(View.GONE);
-    			findViewById(R.id.register_button).setVisibility(View.VISIBLE);
         	}
     		else {
-				Toast.makeText(DetailSubjectActivity.this, "please connect to Internet or the server is down...", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DetailSubjectActivity.this, getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
     		}
         }
     }

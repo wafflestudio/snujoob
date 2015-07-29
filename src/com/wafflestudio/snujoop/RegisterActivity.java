@@ -27,30 +27,35 @@ public class RegisterActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			String studentNumber = ((EditText)findViewById(R.id.student_number)).getText().toString();
-			if (User.isStudentNumber(studentNumber) == false){
-				Toast.makeText(RegisterActivity.this, "please input the student number in format (20xx-xxxx).", Toast.LENGTH_SHORT).show();
+			if (!User.isStudentNumber(studentNumber)){
+				Toast.makeText(RegisterActivity.this, getString(R.string.student_number_format_error_message), Toast.LENGTH_SHORT).show();
 				return;
 			}
 			String password = ((EditText)findViewById(R.id.password)).getText().toString();
 			String passwordConfirm = ((EditText)findViewById(R.id.password_confirm)).getText().toString();
+			if (!User.isPassword(password)){
+				Toast.makeText(RegisterActivity.this, getString(R.string.password_format_error_message), Toast.LENGTH_SHORT).show();
+				return;
+			}
 			
 			//TODO please make hashed password and send that to server.
 			
-			if (password.equals(passwordConfirm) == false){
-				Toast.makeText(RegisterActivity.this, "please confirm your password. it's wrong.", Toast.LENGTH_SHORT).show();
+			if (!password.equals(passwordConfirm)){
+				Toast.makeText(RegisterActivity.this, getString(R.string.password_confirm_failure_message), Toast.LENGTH_SHORT).show();
 				return;
 			}
 			
-			JSONObject jsonobjectStudentNumberPassword = new JSONObject();
+			JSONObject registerInformation = new JSONObject();
 			try {
-				jsonobjectStudentNumberPassword.put("student_number", studentNumber);
-				jsonobjectStudentNumberPassword.put("password", password);
+				registerInformation.put("student_number", studentNumber);
+				registerInformation.put("password", password);
 			} catch (JSONException e) {
-				Toast.makeText(RegisterActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
+				Toast.makeText(RegisterActivity.this, getString(R.string.json_parsing_error_message), Toast.LENGTH_SHORT).show();
+	    		findViewById(R.id.linla_header_progress).setVisibility(View.GONE);
 				e.printStackTrace();
 				return;
 			}
-			String send_msg = jsonobjectStudentNumberPassword.toString();
+			String send_msg = registerInformation.toString();
 			
 			new RequestRegister().execute(Http.HOME + "/users", send_msg);
     		findViewById(R.id.linla_header_progress).setVisibility(View.VISIBLE);
@@ -72,42 +77,35 @@ public class RegisterActivity extends Activity {
             
         	if(result != null){
         		Log.d("ASYNC", "result = " + result);
-        		JSONObject jsonResult = null;
+        		JSONObject jsonResult;
+        		String requestRegisterResult;
         		try {
 					jsonResult = new JSONObject(result);
-				} catch (JSONException e) {
-					Toast.makeText(RegisterActivity.this, "fail making jsonobject", Toast.LENGTH_SHORT).show();
-		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
-					e.printStackTrace();
-					return;
-				}
-        		String requestRegisterResult;
-				try {
 					requestRegisterResult = jsonResult.getString("result");
 				} catch (JSONException e) {
-					Toast.makeText(RegisterActivity.this, "there are no 'result'", Toast.LENGTH_SHORT).show();
+					Toast.makeText(RegisterActivity.this, getString(R.string.json_parsing_error_message), Toast.LENGTH_SHORT).show();
 		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
 					e.printStackTrace();
 					return;
 				}
-        		switch (requestRegisterResult){ 
+        		switch (requestRegisterResult){
         		case "already":
-        			Toast.makeText(RegisterActivity.this, "already exist. please contact to 'glglgozz@wafflestudio.com'", Toast.LENGTH_LONG).show();
+        			Toast.makeText(RegisterActivity.this, getString(R.string.sign_in_already_message), Toast.LENGTH_LONG).show();
 		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
         			break;
         		case "success":
-        			Toast.makeText(RegisterActivity.this, "success resgistering", Toast.LENGTH_LONG).show();
+        			Toast.makeText(RegisterActivity.this, getString(R.string.sign_in_success_message), Toast.LENGTH_SHORT).show();
 		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
         			finish();
         			break;
         		case "fail":
-        			Toast.makeText(RegisterActivity.this, "fail registering\nif something wrong, please connect to 'glglgozz@wafflestudio.com'", Toast.LENGTH_LONG).show();
+        			Toast.makeText(RegisterActivity.this, getString(R.string.sign_in_failure_message), Toast.LENGTH_LONG).show();
 		    		((Button)findViewById(R.id.register_button)).setEnabled(true);
         			break;
         		}
         	}
     		else {
-				Toast.makeText(RegisterActivity.this, "please connect to Internet", Toast.LENGTH_SHORT).show();
+				Toast.makeText(RegisterActivity.this, getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
 	    		((Button)findViewById(R.id.register_button)).setEnabled(true);
     		}
     		findViewById(R.id.linla_header_progress).setVisibility(View.GONE);

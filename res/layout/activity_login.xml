@@ -53,7 +53,7 @@
         android:layout_alignRight="@+id/student_number"
         android:layout_below="@+id/password"
         android:layout_marginTop="40dp"
-        android:text="@string/sign_in" />
+        android:text="@string/sign_in_button" />
 
     <CheckBox
         android:id="@+id/auto_login_checkbox"

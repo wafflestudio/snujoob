@@ -2,18 +2,37 @@
 <resources>
 
     <string name="app_name">SNUJoob</string>
+    
     <string name="title_activity_login">로그인</string>
     <string name="title_activity_register">회원가입</string>
     <string name="title_activity_find_subject">강좌 검색</string>
     <string name="title_activity_detail_subject">과목 정보</string>
-    <string name="add_subject">Add Subject</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_up">Sign up</string>
-    <string name="unregister">Unregister</string>
+    
+    <string name="add_subject_button">Add Subject</string>
+    <string name="sign_in_button">Sign in</string>
+    <string name="sign_up_button">Sign up</string>
+    <string name="unregister_button">Unregister</string>
     <string name="hint_student_number">20xx-xxxxx</string>
     <string name="hint_password">password</string>
     <string name="hint_password_confirm">password confirm</string>
     <string name="developer">Leeingnyo (SNUCSE14)\nglglgozz@wafflestudio.com</string>
     <string name="auto_login">Save Info</string>
-
+    
+    <string name="error_message">잘못된 접근입니다.</string>
+    <string name="server_exception">서버에 연결할 수 없습니다.</string>
+    <string name="register_suceess_message">등록되었습니다.</string>
+    <string name="register_failure_message">등록에 실패하였습니다.</string>
+    <string name="unregister_success_message">해제되었습니다.</string>
+    <string name="unregister__failure_message">해제에 실패하였습니다.</string>
+    <string name="log_in_success_message">로그인 하였습니다</string>
+    <string name="log_in_failure_message">로그인에 실패하였습니다.</string>
+    <string name="sign_in_success_message">등록되었습니다.</string>
+    <string name="sign_in_failure_message">회원가입에 실패하였습니다. 계속되는 에러 시 glglgozz@wafflestudio.com으로 문의바랍니다.</string>
+    <string name="sign_in_already_message">이미 등록된 회원입니다. 등록하지 않았을 경우 glglgozz@wafflestduio.com으로 문의바랍니다.	</string>
+    <string name="json_parsing_error_message">Error: Can\'t parse JSON object.</string>
+    <string name="need_keyword">검색어를 입력해주세요.</string>
+    <string name="student_number_format_error_message">학번을 (20xx-xxxxx)에 맞게 써주세요.</string>
+    <string name="password_format_error_message">비밀번호가 비어있습니다.</string>
+    <string name="password_confirm_failure_message">입력하신 비밀번호가 다릅니다 확인해주세요.</string>
+    <string name="push_message">등록한 과목에 자리가 났습니다.</string>
 </resources>

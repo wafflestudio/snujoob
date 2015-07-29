@@ -44,6 +44,9 @@ public class User {
 	static Boolean isStudentNumber(String studentNumber){
 		return Pattern.matches("20[0-9]{2}-[0-9]{5}", studentNumber);
 	}
+	static Boolean isPassword(String password){
+		return !"".equals(password);
+	}
 	void setToken(String token){
 		this.token = token;
 	}

@@ -34,7 +34,7 @@ public class Http {
 		        result = new String(temp);
 			}
 			else
-				result = "Did not work!";
+				result = "{'result' : 'fail'}";
 
 		} catch (Exception e) {
 			Log.d("InputStream", e.getLocalizedMessage());

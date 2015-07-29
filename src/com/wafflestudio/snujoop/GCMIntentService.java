@@ -21,12 +21,10 @@ public class GCMIntentService extends GCMBaseIntentService {
     private Notification mNoti;
     private NotificationManager mNM;
     
-    //public �⺻ �����ڸ� ������ ������ �Ѵ�.
     public GCMIntentService(){ this(PROJECT_ID); }
    
     public GCMIntentService(String project_id) { super(project_id); }
  
-    /** Ǫ�÷� ���� �޽��� */
     @Override
     protected void onMessage(Context context, Intent intent) {
         Bundle b = intent.getExtras();
@@ -51,11 +49,11 @@ public class GCMIntentService extends GCMBaseIntentService {
     			, data.get("lecturer"));
         mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNoti = new NotificationCompat.Builder(getApplicationContext())
-        		.setContentTitle("SNUJoop")
+        		.setContentTitle(getString(R.string.app_name))
         		.setContentText(message)
         		.setStyle(new NotificationCompat.BigTextStyle().bigText(message))
         		.setSmallIcon(R.drawable.ic_launcher)
-        		.setTicker("등록한 과목에서 자리가 났습니다.")
+        		.setTicker(getString(R.string.push_message))
         		.setAutoCancel(true)
         		.setOngoing(false)
         		.setVibrate(new long[] { 0, 100, 200, 300, 500 })
@@ -64,19 +62,16 @@ public class GCMIntentService extends GCMBaseIntentService {
         mNM.notify(Integer.parseInt(data.get("id")), mNoti);
     }
 
-    /**���� �߻���*/
     @Override
     protected void onError(Context context, String errorId) {
         Log.d(tag, "onError. errorId : "+errorId);
     }
  
-    /**�ܸ����� GCM ���� ��� ���� �� ��� id�� �޴´�*/
     @Override
     protected void onRegistered(Context context, String regId) {
         Log.d(tag, "onRegistered. regId : "+regId);
     }
 
-    /**�ܸ����� GCM ���� ��� ������ �ϸ� ������ ��� id�� �޴´�*/
     @Override
     protected void onUnregistered(Context context, String regId) {
         Log.d(tag, "onUnregistered. regId : "+regId);
