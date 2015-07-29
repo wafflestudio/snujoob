@@ -368,7 +368,7 @@ int id class_time 0x7f090043
 int id collapseActionView 0x7f090015
 int id decor_content_parent 0x7f09002f
 int id default_activity_button 0x7f090024
-int id developer 0x7f090054
+int id developer 0x7f090055
 int id dialog 0x7f090019
 int id disableHome 0x7f09000d
 int id dropdown 0x7f09001a
@@ -377,6 +377,7 @@ int id end 0x7f09001c
 int id enrolled 0x7f090045
 int id expand_activities_button 0x7f090022
 int id expanded_menu 0x7f090028
+int id explaination 0x7f090054
 int id find_button 0x7f090048
 int id home 0x7f090000
 int id homeAsUp 0x7f09000e
@@ -385,7 +386,6 @@ int id ifRoom 0x7f090016
 int id image 0x7f090023
 int id keyword 0x7f090049
 int id lecturer 0x7f090042
-int id linearLayout1 0x7f09003f
 int id linla_header_progress 0x7f09004a
 int id listMode 0x7f09000a
 int id list_item 0x7f090025
@@ -395,7 +395,7 @@ int id never 0x7f090017
 int id none 0x7f09000f
 int id normal 0x7f09000b
 int id password 0x7f09004e
-int id password_confirm 0x7f090055
+int id password_confirm 0x7f090056
 int id pb_header_progress 0x7f09004b
 int id progress_circular 0x7f090007
 int id progress_horizontal 0x7f090008
@@ -422,6 +422,7 @@ int id subject_list_view 0x7f090052
 int id subject_name 0x7f090040
 int id subject_number 0x7f090041
 int id submit_area 0x7f09003c
+int id sujbect_detail 0x7f09003f
 int id tabMode 0x7f09000c
 int id title 0x7f090027
 int id unregister_button 0x7f090047

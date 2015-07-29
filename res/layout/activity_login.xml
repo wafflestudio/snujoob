@@ -29,7 +29,8 @@
         android:layout_marginTop="115dp"
         android:ems="10"
         android:hint="@string/hint_student_number"
-        android:inputType="text" >
+        android:inputType="text"
+        android:singleLine="true" >
 
         <requestFocus />
     </EditText>
@@ -43,14 +44,17 @@
         android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="@string/hint_password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/student_number"
+        android:layout_alignStart="@+id/student_number"
         android:layout_alignRight="@+id/student_number"
+        android:layout_alignEnd="@+id/student_number"
         android:layout_below="@+id/password"
         android:layout_marginTop="40dp"
         android:text="@string/sign_in_button" />
@@ -60,10 +64,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/login_button"
+        android:layout_alignStart="@+id/login_button"
         android:layout_alignRight="@+id/login_button"
+        android:layout_alignEnd="@+id/login_button"
         android:layout_below="@+id/login_button"
         android:layout_marginTop="0dp"
         android:text="@string/auto_login"
-        android:checked="true" />
+        android:checked="true"
+        android:singleLine="true" />
 
 </RelativeLayout>

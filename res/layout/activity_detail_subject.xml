@@ -5,55 +5,61 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/sujbect_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:padding="10dp"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/subject_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
+            android:text="강의명"
+        	android:padding="3dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/subject_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
+            android:text="강의 번호"
+        	android:padding="3dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/lecturer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
+            android:text="교수님"
+        	android:padding="3dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         
         <TextView
             android:id="@+id/class_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
+            android:text="시간"
+        	android:padding="3dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         
         <TextView
             android:id="@+id/capacity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
+            android:text="정원"
+        	android:padding="3dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/enrolled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
+            android:text="등록한 사람 수"
+        	android:padding="3dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-
     </LinearLayout>
 
     <Button
@@ -61,8 +67,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/linearLayout1"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/sujbect_detail"
+        android:layout_margin="10dp"
         android:text="Register" />
 
     <Button
@@ -70,7 +79,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout1"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/sujbect_detail"
+        android:layout_margin="10dp"
         android:text="Unregister" />
 
 </RelativeLayout>
