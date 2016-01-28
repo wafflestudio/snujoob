@@ -22,9 +22,9 @@ import java.io.FileInputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int LOGIN_ACTIVITY = 0;
-    private static final int SUCCESSFUL_LOGIN = 100;
-    private static final int FAIL_LOGIN = 200;
+    private static final int LOGIN_ACTIVITY = 1;
+    private static final int SUCCESSFUL_LOGIN = 101;
+    private static final int FAIL_LOGIN = 201;
 
     LinearLayout progressBar;
     String studentId;

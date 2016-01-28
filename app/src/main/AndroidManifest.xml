@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.leeingnyo.snujoob">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,8 +22,12 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/login"></activity>
+            android:label="@string/login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".JoinActivity"
+            android:label="@string/join"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
