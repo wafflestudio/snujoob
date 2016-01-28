@@ -1,5 +1,6 @@
 package me.leeingnyo.snujoob;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,10 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int LOGIN_ACTIVITY = 0;
+    private static final int SUCCESSFUL_LOGIN = 100;
+    private static final int FAIL_LOGIN = 200;
 
     LinearLayout progressBar;
     String studentId;
@@ -82,11 +87,31 @@ public class MainActivity extends AppCompatActivity {
                 goToLoginActivity();
             }
         });
-        RequestSingleton.getInstance(getBaseContext()).addToRequestQueue(autoLogin);
+        RequestSingleton.getInstance(this).addToRequestQueue(autoLogin);
     }
 
     private void goToLoginActivity(){
         Toast.makeText(getBaseContext(), "로그인이 필요합니다", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivityForResult(intent, LOGIN_ACTIVITY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+        case LOGIN_ACTIVITY:
+            switch (resultCode){
+            case SUCCESSFUL_LOGIN:
+                studentId = data.getStringExtra("student_id");
+                token = data.getStringExtra("token");
+                Toast.makeText(this, "환영합니다, " + studentId + " 님", Toast.LENGTH_SHORT).show();
+                break;
+            case FAIL_LOGIN:
+                finish();
+                break;
+            }
+            break;
+        }
     }
 
     @Override

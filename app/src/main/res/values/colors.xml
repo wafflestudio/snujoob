@@ -2,6 +2,7 @@
 <resources>FF82AC
     <color name="colorPrimary">#FF82AC</color>
     <color name="colorPrimaryDark">#F06292</color>
-    <color name="colorAccent">#62F06F</color>
+    <color name="colorPrimaryLight">#ffb4cd</color>
+    <color name="colorAccent">#80D8FF</color>
     <color name="windowBackground">#F2F2F2</color>
 </resources>
