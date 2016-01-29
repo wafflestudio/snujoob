@@ -7,18 +7,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int FAIL_LOGIN = 201;
 
     LinearLayout progressBar;
+    EditText queryEditText;
+    Button searchButton;
+    ImageView adImageView;
+    ListView lectureListView;
+
     String studentId;
     String token;
 
@@ -38,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         progressBar = (LinearLayout)findViewById(R.id.progress_bar);
+        queryEditText = (EditText)findViewById(R.id.query);
+        searchButton = (Button)findViewById(R.id.search_button);
+        adImageView = (ImageView)findViewById(R.id.image_ad);
+        lectureListView = (ListView)findViewById(R.id.lecture_list);
 
-        progressBar.setVisibility(View.VISIBLE);
-
+        makeControlsDisabled();
         try {
             FileInputStream infoFile = openFileInput("information");
             StringBuffer fileContent = new StringBuffer("");
@@ -62,10 +78,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void autoLogin(String studentId, String token) throws JSONException {
+    private void makeControlsDisabled(){
+        progressBar.setVisibility(View.VISIBLE);
+        queryEditText.setEnabled(false);
+        searchButton.setEnabled(false);
+    }
+
+    private void makeControlsEnabled(){
+        progressBar.setVisibility(View.GONE);
+        queryEditText.setEnabled(true);
+        searchButton.setEnabled(true);
+    }
+
+    private void autoLogin(String studentId, final String token) throws JSONException {
         JSONObject params = new JSONObject();
         params.put("student_id", studentId);
-        params.put("token", token);
         JsonObjectRequest autoLogin = new JsonObjectRequest(Request.Method.POST, RequestSingleton.getAutoLoginUrl(), params
                 , new Response.Listener<JSONObject>() {
             @Override
@@ -73,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     boolean result = response.getBoolean("result");
                     if (result){
-                        progressBar.setVisibility(View.GONE);
+                        makeControlsEnabled();
+                        getUserInformation();
                     } else  {
                         goToLoginActivity();
                     }
@@ -86,7 +114,14 @@ public class MainActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 goToLoginActivity();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("x-user-token", token);
+                return headers;
+            }
+        };
         RequestSingleton.getInstance(this).addToRequestQueue(autoLogin);
     }
 
@@ -105,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
                 studentId = data.getStringExtra("student_id");
                 token = data.getStringExtra("token");
                 Toast.makeText(this, "환영합니다, " + studentId + " 님", Toast.LENGTH_SHORT).show();
+                makeControlsEnabled();
+                getUserInformation();
                 break;
             case FAIL_LOGIN:
                 finish();
@@ -112,6 +149,35 @@ public class MainActivity extends AppCompatActivity {
             }
             break;
         }
+    }
+
+    private void getUserInformation(){
+        makeControlsDisabled();
+        JsonObjectRequest getUserInformation = new JsonObjectRequest(Request.Method.GET, RequestSingleton.getUserUrl(studentId), null
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray lectures = response.getJSONArray("lectures");
+                    JSONArray watchingList = response.getJSONArray("watching_list");
+                    Toast.makeText(getBaseContext(), response.toString(), Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("x-user-token", token);
+                return headers;
+            }
+        };
+        RequestSingleton.getInstance(this).addToRequestQueue(getUserInformation);
     }
 
     @Override

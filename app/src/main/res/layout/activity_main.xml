@@ -10,6 +10,51 @@
         android:foreground="?android:windowContentOverlay">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <EditText
+                    android:id="@+id/query"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:hint="컴개실 (교과목명만 가능)"/>
+
+                <Button
+                    android:id="@+id/search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="검색"
+                    android:theme="@style/SnujoobButton"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_ad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+
+            <ListView
+                android:id="@+id/lecture_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+            </ListView>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/progress_bar"
             android:orientation="vertical"
             android:layout_width="match_parent"
