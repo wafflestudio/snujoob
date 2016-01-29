@@ -233,31 +233,31 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e){
             Toast.makeText(this, "강의 정보를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
-        lectureListView.setAdapter(new RegisteredLecture(getApplicationContext(), lecturesList, R.layout.item_registered_subject));
+        lectureListView.setAdapter(new RegisteredLecture(getApplicationContext(), lecturesList, R.layout.item_registered_lecture));
         makeControlsEnabled();
     }
 
     public class RegisteredLecture extends RecyclerView.Adapter<RegisteredLecture.ViewHolder> {
 
         Context context;
-        List<Lecture> items;
-        int item_layout;
+        List<Lecture> lectures;
+        int item_registered_lecture;
 
-        public RegisteredLecture(Context context, List<Lecture> items, int item_layout) {
-            this.context=context;
-            this.items=items;
-            this.item_layout=item_layout;
+        public RegisteredLecture(Context context, List<Lecture> lectures, int item_registered_lecture) {
+            this.context = context;
+            this.lectures = lectures;
+            this.item_registered_lecture = item_registered_lecture;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v= LayoutInflater.from(parent.getContext()).inflate(item_layout, null);
+            View v= LayoutInflater.from(parent.getContext()).inflate(item_registered_lecture, null);
             return new ViewHolder(v);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            final Lecture lecture = items.get(position);
+            final Lecture lecture = lectures.get(position);
             holder.name.setText(lecture.name);
             holder.name.setSelected(true);
             holder.name.setMarqueeRepeatLimit(-1);
@@ -282,9 +282,9 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     buttonView.setEnabled(false);
                     if (isChecked){
-                        // watching
+                        watching(buttonView, lecture.id);
                     } else {
-                        // unwatching
+                        unwatching(buttonView, lecture.id);
                     }
                 }
             });
@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return this.items.size();
+            return this.lectures.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -329,9 +329,110 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void watching(final CompoundButton buttonView, final Integer lectureId){
+        class Function {
+            public void successEnable(){
+                progressBar.setVisibility(View.GONE);
+                buttonView.setEnabled(true);
+            }
+            public void failureEnable(){
+                progressBar.setVisibility(View.GONE);
+                buttonView.setEnabled(true);
+                buttonView.setChecked(false);
+            }
+        }
+        final Function f = new Function();
+        JSONObject params = new JSONObject();
+        try {
+            params.put("lecture_id", lectureId);
+        } catch (JSONException e){
+            f.failureEnable();
+        }
+        JsonObjectRequest watch = new JsonObjectRequest(Request.Method.POST, RequestSingleton.getWatchUrl(studentId), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    boolean result = response.getBoolean("result");
+                    if (result){
+                        Toast.makeText(getBaseContext(), "감시에 등록하셨습니다", Toast.LENGTH_SHORT).show();
+                        watchingList.add(lectureId);
+                        f.successEnable();
+                    } else {
+                        f.failureEnable();
+                    }
+                } catch (JSONException e){
+                    f.failureEnable();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-user-token", token);
+                return headers;
+            }
+        };
+        RequestSingleton.getInstance(this).addToRequestQueue(watch);
+    }
+
+    private void unwatching(final CompoundButton buttonView, final Integer lectureId){
+        class Function {
+            public void successEnable(){
+                progressBar.setVisibility(View.GONE);
+                buttonView.setEnabled(true);
+            }
+            public void failureEnable(){
+                progressBar.setVisibility(View.GONE);
+                buttonView.setEnabled(true);
+                buttonView.setChecked(true);
+            }
+        }
+        final Function f = new Function();
+        JSONObject params = new JSONObject();
+        try {
+            params.put("lecture_id", lectureId);
+        } catch (JSONException e){
+            f.failureEnable();
+        }
+        JsonObjectRequest unwatch = new JsonObjectRequest(Request.Method.POST, RequestSingleton.getUnwatchUrl(studentId), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    boolean result = response.getBoolean("result");
+                    if (result){
+                        Toast.makeText(getBaseContext(), "감시를 해제하셨습니다", Toast.LENGTH_SHORT).show();
+                        watchingList.remove(lectureId);
+                        f.successEnable();
+                    } else {
+                        f.failureEnable();
+                    }
+                } catch (JSONException e){
+                    f.failureEnable();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-user-token", token);
+                return headers;
+            }
+        };
+        RequestSingleton.getInstance(this).addToRequestQueue(unwatch);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

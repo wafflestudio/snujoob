@@ -77,8 +77,14 @@ public class RequestSingleton {
     public static String getRegisterUrl(String studentId){
         return HOST + "users/" + studentId + "/register";
     }
-    public static String getWatchrUrl(String studentId){
+    public static String getUnregisterUrl(String studentId){
+        return HOST + "users/" + studentId + "/unregister";
+    }
+    public static String getWatchUrl(String studentId){
         return HOST + "users/" + studentId + "/watch";
+    }
+    public static String getUnwatchUrl(String studentId){
+        return HOST + "users/" + studentId + "/unwatch";
     }
     public static String getUserUrl(String studentId){
         return HOST + "users/" + studentId;
