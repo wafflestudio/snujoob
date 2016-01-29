@@ -12,4 +12,10 @@ public class Lecture {
     public Integer enrolledCapacity;
     public Integer competitor;
     // 귀찮다 일단 다 public
+
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s %s)", name, lectureNumber, lecturer);
+    }
 }

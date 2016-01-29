@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -30,7 +31,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -180,7 +183,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             final Lecture lecture = lectures.get(position);
             holder.name.setText(lecture.name);
             holder.name.setSelected(true);
@@ -205,13 +208,13 @@ public class SearchActivity extends AppCompatActivity {
             holder.register.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // register
+                    register(holder.register, holder.unregister, lecture);
                 }
             });
             holder.unregister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // unregister
+                    unregister(holder.register, holder.unregister, lecture);
                 }
             });
         }
@@ -244,6 +247,118 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void register(final Button registerButton, final Button unregisterButton, final Lecture lecture){
+        class Function {
+            public void disable(){
+                progressBar.setVisibility(View.VISIBLE);
+                registerButton.setEnabled(false);
+            }
+            public void successEnable(){
+                progressBar.setVisibility(View.GONE);
+                registerButton.setEnabled(true);
+                registerButton.setVisibility(View.GONE);
+                unregisterButton.setVisibility(View.VISIBLE);
+            }
+            public void failureEnable(){
+                progressBar.setVisibility(View.GONE);
+                registerButton.setEnabled(true);
+            }
+        }
+        final Function f = new Function();
+        f.disable();
+        JSONObject params = new JSONObject();
+        try {
+            params.put("lecture_id", lecture.id);
+        } catch (JSONException e){
+            f.failureEnable();
+        }
+        JsonObjectRequest register = new JsonObjectRequest(Request.Method.POST, RequestSingleton.getRegisterUrl(studentId), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    boolean result = response.getBoolean("result");
+                    if (result){
+                        Toast.makeText(getBaseContext(), lecture + " 을(를) 등록하셨습니다", Toast.LENGTH_SHORT).show();
+                        f.successEnable();
+                    } else {
+                        f.failureEnable();
+                    }
+                } catch (JSONException e){
+                    f.failureEnable();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                f.failureEnable();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-user-token", token);
+                return headers;
+            }
+        };
+        RequestSingleton.getInstance(this).addToRequestQueue(register);
+    }
+
+    private void unregister(final Button registerButton, final Button unregisterButton, final Lecture lecture){
+        class Function {
+            public void disable(){
+                progressBar.setVisibility(View.VISIBLE);
+                unregisterButton.setEnabled(false);
+            }
+            public void successEnable(){
+                progressBar.setVisibility(View.GONE);
+                unregisterButton.setEnabled(true);
+                unregisterButton.setVisibility(View.GONE);
+                registerButton.setVisibility(View.VISIBLE);
+            }
+            public void failureEnable(){
+                progressBar.setVisibility(View.GONE);
+                unregisterButton.setEnabled(true);
+            }
+        }
+        final Function f = new Function();
+        f.disable();
+        JSONObject params = new JSONObject();
+        try {
+            params.put("lecture_id", lecture.id);
+        } catch (JSONException e){
+            f.failureEnable();
+        }
+        JsonObjectRequest unregister = new JsonObjectRequest(Request.Method.POST, RequestSingleton.getUnregisterUrl(studentId), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    boolean result = response.getBoolean("result");
+                    if (result){
+                        Toast.makeText(getBaseContext(), lecture + " 을(를) 해제하셨습니다", Toast.LENGTH_SHORT).show();
+                        f.successEnable();
+                    } else {
+                        f.failureEnable();
+                    }
+                } catch (JSONException e){
+                    f.failureEnable();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                f.failureEnable();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-user-token", token);
+                return headers;
+            }
+        };
+        RequestSingleton.getInstance(this).addToRequestQueue(unregister);
     }
 
     @Override

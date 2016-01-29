@@ -400,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     boolean result = response.getBoolean("result");
                     if (result){
-                        Toast.makeText(getBaseContext(), "과목을 해제하셨습니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), lecture + " 을(를) 해제하셨습니다", Toast.LENGTH_SHORT).show();
                         int pos = lecturesList.indexOf(lecture);
                         registeredList.remove(lecture.id);
                         watchingList.remove(lecture.id);
@@ -459,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     boolean result = response.getBoolean("result");
                     if (result){
-                        Toast.makeText(getBaseContext(), "감시에 등록하셨습니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), lecture + " 을(를) 감시에 등록하셨습니다", Toast.LENGTH_SHORT).show();
                         watchingList.add(lecture.id);
                         f.successEnable();
                     } else {
@@ -472,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                f.failureEnable();
             }
         }){
             @Override
@@ -515,7 +515,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     boolean result = response.getBoolean("result");
                     if (result){
-                        Toast.makeText(getBaseContext(), "감시를 해제하셨습니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), lecture + " 을(를) 감시를 해제하셨습니다", Toast.LENGTH_SHORT).show();
                         watchingList.remove(lecture.id);
                         f.successEnable();
                     } else {
@@ -556,6 +556,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            // go to setting activity
             return true;
         }
 
