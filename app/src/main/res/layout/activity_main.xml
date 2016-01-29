@@ -27,14 +27,15 @@
                     android:id="@+id/query"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="9"
-                    android:hint="컴개실 (교과목명만 가능)"/>
+                    android:layout_weight="1"
+                    android:hint="컴개실 (교과목명만 가능)"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
 
                 <Button
                     android:id="@+id/search_button"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:text="검색"
                     android:theme="@style/SnujoobButton"/>
 

@@ -22,4 +22,7 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="colorButtonNormal">@color/colorPrimaryLight</item>
     </style>
+
+    <style name="LectureItem">
+    </style>
 </resources>

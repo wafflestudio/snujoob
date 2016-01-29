@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,10 +33,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import jp.wasabeef.recyclerview.animators.FadeInRightAnimator;
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     List<Integer> watchingList;
     List<Integer> registeredList;
     List<Lecture> lecturesList;
-
+    Boolean isSearched;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +79,29 @@ public class MainActivity extends AppCompatActivity {
         // emptyView = findViewById(R.id.empty);
         // retryButton = (Button)findViewById(R.id.retry_button);
 
-        LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        FadeInRightAnimator itemAnimator = new FadeInRightAnimator();
+        itemAnimator.setRemoveDuration(500);
         lectureListView.setHasFixedSize(true);
         lectureListView.setLayoutManager(layoutManager);
+        lectureListView.setItemAnimator(itemAnimator);
         watchingList = new ArrayList<>();
         registeredList = new ArrayList<>();
         lecturesList = new ArrayList<>();
+        queryEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                search();
+                return true;
+            }
+        });
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search();
+            }
+        });
+        isSearched = false;
 
         makeControlsDisabled();
         try {
@@ -100,6 +123,41 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e){
             goToLoginActivity();
         }
+    }
+
+    public void search(){
+        String query = queryEditText.getText().toString();
+        String queryEncoded;
+        if (query.length() < 2){
+            Toast.makeText(MainActivity.this, "2글자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            queryEncoded = URLEncoder.encode(query, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(MainActivity.this, "이상이 생겼습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        makeControlsDisabled();
+        JsonObjectRequest search = new JsonObjectRequest(Request.Method.GET, RequestSingleton.getSearchUrl() + "?query=" + queryEncoded, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray lectures = response.getJSONArray("lectures");
+                    showSearchedLectures(lectures);
+                } catch (JSONException e) {
+                    Toast.makeText(MainActivity.this, "검색에 실패했습니다. 인터넷을 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    makeControlsEnabled();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "검색에 실패했습니다. 인터넷을 확인해주세요.", Toast.LENGTH_SHORT).show();
+                makeControlsEnabled();
+            }
+        });
+        RequestSingleton.getInstance(this).addToRequestQueue(search);
     }
 
     private void makeControlsDisabled(){
@@ -208,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showRegisteredLectures(JSONArray lectures, JSONArray watchings){
+        lecturesList = new ArrayList<>();
         try {
             for (int index = 0; index < watchings.length(); index++) {
                 JSONObject watching = watchings.getJSONObject(index);
@@ -233,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e){
             Toast.makeText(this, "강의 정보를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
-        lectureListView.setAdapter(new RegisteredLecture(getApplicationContext(), lecturesList, R.layout.item_registered_lecture));
+        lectureListView.setAdapter(new AlphaInAnimationAdapter(new RegisteredLecture(getApplicationContext(), lecturesList, R.layout.item_registered_lecture)));
         makeControlsEnabled();
     }
 
@@ -251,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v= LayoutInflater.from(parent.getContext()).inflate(item_registered_lecture, null);
+            View v = LayoutInflater.from(parent.getContext()).inflate(item_registered_lecture, null);
             return new ViewHolder(v);
         }
 
@@ -327,6 +386,126 @@ public class MainActivity extends AppCompatActivity {
                 watching = (CheckBox)itemView.findViewById(R.id.watching);
             }
         }
+
+        public void removeItem(Lecture lecture){
+            int position = lectures.indexOf(lecture);
+            if (position != -1){
+                lectures.remove(lecture);
+                notifyItemRemoved(position);
+            }
+        }
+    }
+
+    private void showSearchedLectures(JSONArray lectures){
+        lecturesList = new ArrayList<>();
+        try {
+            for (int index = 0; index < lectures.length(); index++) {
+                JSONObject lectureJson = lectures.getJSONObject(index);
+                Lecture lecture = new Lecture();
+                lecture.id = lectureJson.getInt("id");
+                lecture.name = lectureJson.getString("name");
+                lecture.subjectNumber = lectureJson.getString("subject_number");
+                lecture.lectureNumber = lectureJson.getString("lecture_number");
+                lecture.lecturer = lectureJson.getString("lecturer");
+                lecture.time = lectureJson.getString("time");
+                lecture.wholeCapacity = lectureJson.getInt("whole_capacity");
+                lecture.enrolledCapacity = lectureJson.getInt("enrolled_capacity");
+
+                lecture.enrolled = lectureJson.getInt("enrolled");
+                lecture.competitor = lectureJson.getInt("competitors_number");
+                lecturesList.add(lecture);
+            }
+        } catch (JSONException e){
+            Toast.makeText(MainActivity.this, "검색에 실패했습니다. 인터넷을 확인해주세요.", Toast.LENGTH_SHORT).show();
+        }
+        lectureListView.setAdapter(new AlphaInAnimationAdapter(new SearchLecture(getApplicationContext(), lecturesList, R.layout.item_search_lecture)));
+        makeControlsEnabled();
+        isSearched = true;
+    }
+
+    public class SearchLecture extends RecyclerView.Adapter<SearchLecture.ViewHolder> {
+
+        Context context;
+        List<Lecture> lectures;
+        int item_registered_lecture;
+
+        public SearchLecture(Context context, List<Lecture> lectures, int item_registered_lecture) {
+            this.context = context;
+            this.lectures = lectures;
+            this.item_registered_lecture = item_registered_lecture;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v= LayoutInflater.from(parent.getContext()).inflate(item_registered_lecture, null);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            final Lecture lecture = lectures.get(position);
+            holder.name.setText(lecture.name);
+            holder.name.setSelected(true);
+            holder.name.setMarqueeRepeatLimit(-1);
+            // FIXME marquee가 잘 안 되는 것 같음
+            holder.number.setText(String.format("%s %s", lecture.subjectNumber, lecture.lectureNumber));
+            holder.lecturer.setText(lecture.lecturer);
+            holder.time.setText(lecture.time);
+            holder.enrolled.setText(String.format("%d / %d", lecture.enrolled, lecture.wholeCapacity));
+            if (lecture.enrolled == lecture.wholeCapacity){
+                holder.enrolled.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+            holder.competitor.setText(lecture.competitor.toString());
+
+            if (registeredList.contains(lecture.id)){
+                holder.register.setVisibility(View.GONE);
+                holder.unregister.setVisibility(View.VISIBLE);
+            } else {
+                holder.register.setVisibility(View.VISIBLE);
+                holder.unregister.setVisibility(View.GONE);
+            }
+            holder.register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // register
+                }
+            });
+            holder.unregister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // unregister
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return this.lectures.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView name;
+            TextView number;
+            TextView lecturer;
+            TextView time;
+            TextView enrolled;
+            TextView competitor;
+            Button register;
+            Button unregister;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                name = (TextView)itemView.findViewById(R.id.name);
+                number = (TextView)itemView.findViewById(R.id.number);
+                lecturer = (TextView)itemView.findViewById(R.id.lecturer);
+                time = (TextView)itemView.findViewById(R.id.time);
+                enrolled = (TextView)itemView.findViewById(R.id.enrolled);
+                competitor = (TextView)itemView.findViewById(R.id.competitor);
+                register = (Button)itemView.findViewById(R.id.register_button);
+                unregister = (Button)itemView.findViewById(R.id.unregister_button);
+            }
+        }
+
     }
 
     private void watching(final CompoundButton buttonView, final Integer lectureId){
@@ -450,5 +629,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isSearched){
+            isSearched = false;
+            getUserInformation();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
