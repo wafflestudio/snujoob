@@ -556,10 +556,25 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            // go to setting activity
+            goToSettingActivity();
+            return true;
+        } else if (id == R.id.action_logout){
+            logout();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToSettingActivity(){
+        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+        startActivity(intent);
+    }
+
+    private void logout(){
+        Toast.makeText(getBaseContext(), "로그아웃합니다", Toast.LENGTH_SHORT).show();
+        deleteFile("information");
+        // remove instance
+        finish();
     }
 }

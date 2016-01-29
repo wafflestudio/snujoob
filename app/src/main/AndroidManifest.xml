@@ -32,6 +32,10 @@
             android:name=".SearchActivity"
             android:label="@string/search"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/action_settings"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_gravity="center_horizontal"
+        android:foreground="?android:windowContentOverlay"
+        android:padding="10dp">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="진동 설정"
+                android:id="@+id/vibrate" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="앱 소개"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="http://glglgozz.snucse.org/snujoob\n
+수강신청을 했는데 넣지를 못 하셨나요? 그럴 때는 수강신청 사이트에 들어가서 누가 버리지는 않았는지, 언제 비는지 계속해서 확인해야 하죠. 하지만 인기 강좌의 경우 노리는 사람이 한 둘이 아닐 터에요. 이런 귀찮은 일을 할 필요없이 비게 되면 알림이 오는 서비스를 만들었습니다. 인터넷이 되고 관심강좌로 등록(※수강신청사이트와 별개)해둔 강의에 자리가 나면 알림이 옵니다. 빨리 수강신청 사이트에 접속해서 듣고 싶었던 강의를 들읍시다!"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="개발자 소개"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="소속: 서울대학교 컴퓨터공학부 14, 와플스튜디오\n이메일: glglgozz@wafflestudio.com"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="라이선스"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Volley"
+                android:layout_margin="10dp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:background="#d9d9d9">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Copyright (C) 2012 The Android Open Source Project\n\nLicensed under the Apache License, Version 2.0 (the 'License');
+you may not use this file except in compliance with the License.\nYou may obtain a copy of the License at
+\n     http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and\nlimitations under the License." />
+            </ScrollView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
