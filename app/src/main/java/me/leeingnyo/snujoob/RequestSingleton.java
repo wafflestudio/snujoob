@@ -90,6 +90,6 @@ public class RequestSingleton {
         return HOST + "users/" + studentId;
     }
     public static String getUpdateGcmUrl(String studentId){
-        return HOST + "users/" + studentId + "/update_gcm";
+        return HOST + "users/" + studentId + "/update-gcm";
     }
 }

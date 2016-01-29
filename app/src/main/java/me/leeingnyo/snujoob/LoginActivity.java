@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +16,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +26,8 @@ import java.io.FileOutputStream;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private static final int SUCCESSFUL_LOGIN = 101;
     private static final int FAIL_LOGIN = 201;
@@ -104,7 +109,11 @@ public class LoginActivity extends AppCompatActivity {
                         infoFile.write(information.toString().getBytes());
                         infoFile.close();
                         Toast.makeText(getBaseContext(), "로그인에 성공하셨습니다.", Toast.LENGTH_LONG).show();
-                        //TODO start update gcm
+                        if (checkPlayServices()) {
+                            // Start IntentService to register this application with GCM.
+                            Intent updateGCM = new Intent(LoginActivity.this, RegistrationIntentService.class);
+                            startService(updateGCM);
+                        }
                         finish();
                     } else {
                         String message = "";
@@ -168,5 +177,20 @@ public class LoginActivity extends AppCompatActivity {
             }
             break;
         }
+    }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i("MainActivity", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }

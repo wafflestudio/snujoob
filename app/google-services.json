@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_id": "snujoob-932ec",
+    "project_number": "241656309802",
+    "name": "SNUJoob"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241656309802:android:f4d201f0b5277219",
+        "client_id": "android:me.leeingnyo.snujoob",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "me.leeingnyo.snujoob"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

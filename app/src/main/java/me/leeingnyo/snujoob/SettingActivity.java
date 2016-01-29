@@ -6,6 +6,11 @@ import android.support.v7.widget.Toolbar;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import org.json.JSONObject;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 public class SettingActivity extends AppCompatActivity {
 
     CheckBox vibrate;
@@ -19,10 +24,19 @@ public class SettingActivity extends AppCompatActivity {
 
         vibrate = (CheckBox)findViewById(R.id.vibrate);
 
+        vibrate.setChecked(MyGcmListenerService.isVibrate);
         vibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // setting
+                MyGcmListenerService.isVibrate = isChecked;
+                try {
+                    FileOutputStream settingFile = openFileOutput("setting", MODE_PRIVATE);
+                    JSONObject setting = new JSONObject();
+                    setting.put("is_vibrate", MyGcmListenerService.isVibrate);
+                    settingFile.write(setting.toString().getBytes());
+                } catch (Exception e){
+
+                }
             }
         });
     }

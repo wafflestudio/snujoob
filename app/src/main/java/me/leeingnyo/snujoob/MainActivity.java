@@ -27,6 +27,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,10 +105,10 @@ public class MainActivity extends AppCompatActivity {
             while ((n = infoFile.read(buffer)) != -1) {
                 fileContent.append(new String(buffer, 0, n));
             }
-            JSONObject jsonObject = new JSONObject(fileContent.toString());
-            studentId = jsonObject.getString("student_id");
-            token = jsonObject.getString("token");
-            boolean isAutoLogin = jsonObject.getBoolean("is_auto_login");
+            JSONObject information = new JSONObject(fileContent.toString());
+            studentId = information.getString("student_id");
+            token = information.getString("token");
+            boolean isAutoLogin = information.getBoolean("is_auto_login");
             if (isAutoLogin){
                 autoLogin(studentId, token);
             }
@@ -574,7 +576,8 @@ public class MainActivity extends AppCompatActivity {
     private void logout(){
         Toast.makeText(getBaseContext(), "로그아웃합니다", Toast.LENGTH_SHORT).show();
         deleteFile("information");
-        // remove instance
+        Intent eraseToken = new Intent(MainActivity.this, UnregistrationIntentService.class);
+        startService(eraseToken);
         finish();
     }
 }
