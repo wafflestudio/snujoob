@@ -27,7 +27,11 @@
         <activity
             android:name=".JoinActivity"
             android:label="@string/join"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchActivity"
+            android:label="@string/search"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
