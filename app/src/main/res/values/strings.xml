@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SNUJoob</string>
+    <string name="action_settings">설정 및 도움말</string>
+    <string name="login">로그인</string>
+    <string name="auto_login">기억하기</string>
+    <string name="join">회원가입</string>
+    <string name="search">검색</string>
+    <string name="logout">로그아웃</string>
+</resources>
