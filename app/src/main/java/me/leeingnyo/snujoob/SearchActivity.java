@@ -32,9 +32,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.recyclerview.animators.FadeInRightAnimator;
-import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
-
 public class SearchActivity extends AppCompatActivity {
 
     LinearLayout progressBar;
@@ -62,11 +59,8 @@ public class SearchActivity extends AppCompatActivity {
         lectureListView = (RecyclerView)findViewById(R.id.lecture_list);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        FadeInRightAnimator itemAnimator = new FadeInRightAnimator();
-        itemAnimator.setRemoveDuration(500);
         lectureListView.setHasFixedSize(true);
         lectureListView.setLayoutManager(layoutManager);
-        lectureListView.setItemAnimator(itemAnimator);
         registeredList = new ArrayList<>();
         lecturesList = new ArrayList<>();
         queryEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -163,7 +157,7 @@ public class SearchActivity extends AppCompatActivity {
         } catch (JSONException e){
             Toast.makeText(getBaseContext(), "검색에 실패했습니다. 인터넷을 확인해주세요.", Toast.LENGTH_SHORT).show();
         }
-        lectureListView.setAdapter(new AlphaInAnimationAdapter(new SearchLecture(getApplicationContext(), lecturesList, R.layout.item_search_lecture)));
+        lectureListView.setAdapter(new SearchLecture(getApplicationContext(), lecturesList, R.layout.item_search_lecture));
         makeControlsEnabled();
     }
 

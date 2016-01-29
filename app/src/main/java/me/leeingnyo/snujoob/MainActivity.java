@@ -33,15 +33,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import jp.wasabeef.recyclerview.animators.FadeInRightAnimator;
-import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,11 +75,8 @@ public class MainActivity extends AppCompatActivity {
         // retryButton = (Button)findViewById(R.id.retry_button);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        FadeInRightAnimator itemAnimator = new FadeInRightAnimator();
-        itemAnimator.setRemoveDuration(500);
         lectureListView.setHasFixedSize(true);
         lectureListView.setLayoutManager(layoutManager);
-        lectureListView.setItemAnimator(itemAnimator);
         watchingList = new ArrayList<>();
         registeredList = new ArrayList<>();
         lecturesList = new ArrayList<>();
@@ -277,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e){
             Toast.makeText(this, "강의 정보를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
-        lectureListView.setAdapter(new AlphaInAnimationAdapter(new RegisteredLecture(getApplicationContext(), lecturesList, R.layout.item_registered_lecture)));
+        lectureListView.setAdapter(new RegisteredLecture(getApplicationContext(), lecturesList, R.layout.item_registered_lecture));
         makeControlsEnabled();
     }
 
@@ -323,12 +315,10 @@ public class MainActivity extends AppCompatActivity {
             holder.watching.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    buttonView.setEnabled(false);
                     if (isChecked){
-                        watching(buttonView, lecture.id);
+                        watching(buttonView, lecture);
                     } else {
-                        unwatching(buttonView, lecture.id);
+                        unwatching(buttonView, lecture);
                     }
                 }
             });
@@ -337,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
             holder.unregister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // register
+                    unregister(v, lecture);
                 }
             });
         }
@@ -381,33 +371,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void watching(final CompoundButton buttonView, final Integer lectureId){
+    private void unregister(final View view, final Lecture lecture){
         class Function {
+            public void disable(){
+                progressBar.setVisibility(View.VISIBLE);
+                view.setEnabled(false);
+            }
             public void successEnable(){
                 progressBar.setVisibility(View.GONE);
-                buttonView.setEnabled(true);
+                view.setEnabled(true);
             }
             public void failureEnable(){
                 progressBar.setVisibility(View.GONE);
-                buttonView.setEnabled(true);
-                buttonView.setChecked(false);
+                view.setEnabled(true);
             }
         }
         final Function f = new Function();
+        f.disable();
         JSONObject params = new JSONObject();
         try {
-            params.put("lecture_id", lectureId);
+            params.put("lecture_id", lecture.id);
         } catch (JSONException e){
             f.failureEnable();
         }
-        JsonObjectRequest watch = new JsonObjectRequest(Request.Method.POST, RequestSingleton.getWatchUrl(studentId), params, new Response.Listener<JSONObject>() {
+        JsonObjectRequest watch = new JsonObjectRequest(Request.Method.POST, RequestSingleton.getUnregisterUrl(studentId), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     boolean result = response.getBoolean("result");
                     if (result){
-                        Toast.makeText(getBaseContext(), "감시에 등록하셨습니다", Toast.LENGTH_SHORT).show();
-                        watchingList.add(lectureId);
+                        Toast.makeText(getBaseContext(), "과목을 해제하셨습니다", Toast.LENGTH_SHORT).show();
+                        int pos = lecturesList.indexOf(lecture);
+                        registeredList.remove(lecture.id);
+                        watchingList.remove(lecture.id);
+                        ((RegisteredLecture)lectureListView.getAdapter()).removeItem(lecture);
                         f.successEnable();
                     } else {
                         f.failureEnable();
@@ -432,8 +429,68 @@ public class MainActivity extends AppCompatActivity {
         RequestSingleton.getInstance(this).addToRequestQueue(watch);
     }
 
-    private void unwatching(final CompoundButton buttonView, final Integer lectureId){
+    private void watching(final CompoundButton buttonView, final Lecture lecture){
         class Function {
+            public void disable(){
+                progressBar.setVisibility(View.VISIBLE);
+                buttonView.setEnabled(false);
+            }
+            public void successEnable(){
+                progressBar.setVisibility(View.GONE);
+                buttonView.setEnabled(true);
+            }
+            public void failureEnable(){
+                progressBar.setVisibility(View.GONE);
+                buttonView.setEnabled(true);
+                buttonView.setChecked(false);
+            }
+        }
+        final Function f = new Function();
+        f.disable();
+        JSONObject params = new JSONObject();
+        try {
+            params.put("lecture_id", lecture.id);
+        } catch (JSONException e){
+            f.failureEnable();
+        }
+        JsonObjectRequest watch = new JsonObjectRequest(Request.Method.POST, RequestSingleton.getWatchUrl(studentId), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    boolean result = response.getBoolean("result");
+                    if (result){
+                        Toast.makeText(getBaseContext(), "감시에 등록하셨습니다", Toast.LENGTH_SHORT).show();
+                        watchingList.add(lecture.id);
+                        f.successEnable();
+                    } else {
+                        f.failureEnable();
+                    }
+                } catch (JSONException e){
+                    f.failureEnable();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-user-token", token);
+                return headers;
+            }
+        };
+        RequestSingleton.getInstance(this).addToRequestQueue(watch);
+    }
+
+    private void unwatching(final CompoundButton buttonView, final Lecture lecture){
+        class Function {
+            public void disable(){
+                progressBar.setVisibility(View.VISIBLE);
+                buttonView.setEnabled(false);
+            }
             public void successEnable(){
                 progressBar.setVisibility(View.GONE);
                 buttonView.setEnabled(true);
@@ -445,9 +502,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         final Function f = new Function();
+        f.disable();
         JSONObject params = new JSONObject();
         try {
-            params.put("lecture_id", lectureId);
+            params.put("lecture_id", lecture.id);
         } catch (JSONException e){
             f.failureEnable();
         }
@@ -458,7 +516,7 @@ public class MainActivity extends AppCompatActivity {
                     boolean result = response.getBoolean("result");
                     if (result){
                         Toast.makeText(getBaseContext(), "감시를 해제하셨습니다", Toast.LENGTH_SHORT).show();
-                        watchingList.remove(lectureId);
+                        watchingList.remove(lecture.id);
                         f.successEnable();
                     } else {
                         f.failureEnable();
